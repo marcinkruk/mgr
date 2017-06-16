@@ -8,7 +8,7 @@ thesis.pdf: thesis.tex
 	$(LATEX) $(LFLAGS) thesis.tex
 
 .PHONY: watch
-watch: thesis.tex
+preview: thesis.tex
 	$(LATEX) $(LFLAGS) $(LWATCH) thesis.tex
 
 clean:
