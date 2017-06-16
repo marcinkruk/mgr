@@ -1,0 +1,639 @@
+\documentclass[a4paper,12pt]{article}
+
+\title{Zachowanie asymptotyczne\\ funkcji falowej moleku\l y H$_2$}
+\author{Marcin Kruk}
+\date{}
+
+\usepackage{amsmath}
+\usepackage[T1]{fontenc} 
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage{graphicx}
+\usepackage[numbers]{natbib}
+\usepackage{indentfirst}
+\usepackage{braket}
+\usepackage{amsfonts}
+
+\usepackage[stable]{footmisc}
+
+%\usepackage{showframe}
+%\usepackage[a4paper]{geometry}
+\usepackage{fullpage}
+
+\renewcommand\thesubsubsection{\thesubsection \alph{subsubsection}}
+\numberwithin{equation}{section}
+\numberwithin{table}{section}
+%\renewcommand{\figurename}{Wykres}
+\numberwithin{figure}{section}
+\addto\captionspolish{\renewcommand{\figurename}{Wykres}}
+\addto\captionspolish{\renewcommand{\tablename}{Tabela}}
+%\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+\def\arraystretch{1.5}
+\begin{document}
+
+%
+% STRONA TYTUŁOWA
+%
+\newpage
+\thispagestyle{empty}
+\vspace*{2cm}
+\begin{center}
+{\huge Uniwersytet Warszawski\\ \vspace{0.3cm}
+Wydział Fizyki}\\
+\vspace{1.5cm}
+Marcin Kruk\\
+Nr albumu: 320379\\
+\vspace{1.5cm}
+{\huge Zachowanie asymptotyczne\\ \vspace{0.3cm}funkcji falowej molekuły H${}_2$}\\
+
+\vspace{2cm}
+Praca licencjacka\\
+na kierunku Inżynieria Nanostrukur\\
+\end{center}
+\vspace{3cm}
+\hfill Praca wykonana pod kierunkiem \vspace{0.2cm}
+
+ 
+\hfill prof. dra hab. Krzysztofa Pachuckiego
+
+\hfill Instytut Fizyki Teoretycznej
+
+\hfill Katedra Optyki Kwantowej i Fizyki atomowej
+\vfill
+\begin{center}
+{\large Warszawa, lipiec 2014}\\
+\end{center}
+%
+% pusta strona
+%
+%\newpage
+%\thispagestyle{empty}
+%\mbox{}
+%
+% OŚWIADCZENIA
+%
+\newpage
+\thispagestyle{empty}
+\vspace*{2cm}
+\noindent
+\emph{Oświadczenie kierującego pracą}
+\vspace{0.6cm}
+
+
+\noindent Oświadczam, że niniejsza praca została przygotowana pod moim kierunkiem i stwierdzam, że spełnia ona warunki do przedstawienia jej w postępowaniu o nadanie tytułu zawodowego.
+\vspace{1cm}
+
+\noindent ................... \hfill ........................................\\
+ Data \hfill Podpis kierującego
+\vspace{3cm}
+
+\noindent \emph{Oświadczenia autora pracy}
+\vspace{0.6cm}
+
+
+\noindent Świadom odpowiedzalności prawnej oświadczam, że niniejsza praca dyplomowa została napisana przeze mnie i nie zawiera treści uzyskanych w sposób niezgodny z przepisami.
+\vspace{0.3cm}
+
+\noindent Oświadczam również, że przedstawiona praca nie była wcześniej przedmiotem procedur związanych z uzyskaniem tytułu zawodowego na wyższej uczelni.
+\vspace{0.3cm}
+
+\noindent Oświadczam ponadto, że niniejsza wersja pracy jest identyczna z załączoną wersją elektroniczną.
+\vspace{1cm}
+
+\noindent ................... \hfill ........................................\\
+ Data \hfill Podpis autora pracy
+\newpage
+%
+% pusta strona
+%
+%\newpage
+%\thispagestyle{empty}
+%\mbox{}
+%
+% STRESZCZENIE, SŁOWA KLUCZOWE
+%
+\newpage
+\begin{center}
+\textbf{Streszczenie}
+\end{center}
+
+W pracy opisano metodę obliczania elementu macierzowego $\braket{\delta({\vec{r}_{12}})}$  w wybranej bazie funkcji próbnych dla molekuły H$_2$. Uzyskano wyniki dla szerokiego zakresu odległości międzyjądrowej $R$ i przeanalizowano przebieg tej zależności. Element ten wnosi wkład do poprawki do energii wynikającej z uwzględnienia efektów relatywistycznych.
+\vspace{2.5cm}
+\begin{center}
+\textbf{Słowa kluczowe}\vspace{0.3cm}
+
+Spektroskopia, molekuły dwuatomowe, metoda Ritza.\\
+\vspace{2.5cm}
+\textbf{Dziedzina pracy (kody według programu Socrates-Erasmus)}\vspace{0.3cm}
+
+13.2 Fizyka\\
+\vspace{2.5cm}
+\textbf{Tytuł pracy w języku angielskim}\vspace{0.3cm}
+
+Long-range asympotic behaviour of molecular hydrogen wavefunction
+\end{center}
+\pagenumbering{gobble}
+\newpage
+%
+% pusta strona
+%
+%\newpage
+%\thispagestyle{empty}
+%\mbox{}
+%
+% SPIS TREŚCI
+%
+\newpage
+\tableofcontents \newpage
+
+%
+% SEKCJA 1. Motywacja
+%
+\pagenumbering{arabic}
+\setcounter{page}{4}
+\section{Motywacja}
+Dokładne obliczenia dla małych układów atomowych są testem dla poprawności mechaniki kwantowej od czasu pojawienia się tej teorii. Zwiększanie precyzji pomiarów spektroskopowych i obliczeń teoretycznych prowadzi do weryfikacji obu metod, jednocześnie ujawniając drobne, systematyczne rozbieżności między nimi. Może to świadczyć o istnieniu dodatkowych oddziaływań między podstawowymi składnikami materii \cite{pohl2010,salumbides2013,dickenson2013}.
+
+Wykonanie obliczeń dla szerokiego zakresu dostępnych parametrów może stanowić podstawę do potwierdzenia wiarygodności teorii oraz wskazać możliwe źródła rozbieżności między teorią a eksperymentem. Może to pozwolić na zaplanowanie eksperymentu ukazującego nieznane dotąd zależności \cite{pohl2013}.
+
+Metody pozwalające otrzymać dokładne funkcje falowe \cite{pachucki2010,pachucki2012,pachucki2013,pachucki2013a} są ciągle rozwijane i otwierają drogę do obliczeń wielu elementów macierzowych z dokładnością przewyższającą dotychczasowe rezultaty. Daje to możliwość dokładniejszego określenia interesujących obserwabli jak np. energia cząsteczki.
+
+Celem pracy jest wykorzystanie dokładnej funkcji falowej do obliczeń elementów macierzowych na  przykładzie elementu $\braket{\delta({\vec{r}_{12}})}$ dla molekuły H$_2$. Wartość tego elementu wnosi wkład do poprawek do energii wynikających z uwzględnienia efektów relatywisycznych. Otrzymano wartości $\braket{\delta({\vec{r}_{12}})}$ dla szerokiego zakresu odległości międzyjądrowych $R$ i przebadano przebieg tej zależności.
+\newpage
+
+%
+% SEKCJA 2. Wstęp
+%
+\section{Wstęp}
+Mechanika kwantowa powstała na początku XX w. w odpowiedzi na pojawienie się zjawisk, których nie dało się wyjaśnić na podstawie dostępnej wtedy wiedzy. Nowa teoria, pomimo pierwotnych trudności interpretacyjnych - z jej probabilistyczną naturą nie zgadzały się takie autorytety jak Einstein - dowiodła swojej słuszności tłumacząc zastane problemy i przewidując wyniki kolejnych eksperymentów.
+
+Niewątpliwym sukcesem mechaniki kwantowej było otrzymane przez Schr\"odingera \\w 1926 r. ścisłe rozwiązanie dla atomu wodoru. Niestety, analityczne rozwiązanie dla bardziej skomplikowanych układów jest możliwe tylko w nielicznych przypadkach. Dlatego, w celu uzyskania informacji o układach wielu cząstek, stosuje się metody przybliżone. Prace dotyczące teoretycznego opisu molekuł prowadzone są od końca lat 20-tych XX w., jednak dopiero użycie do obliczeń komputerów dało bardzo dokładne wyniki.
+
+Warto wymienić tu prace Włodzimierza Kołosa i Lutosława Wolniewicza z lat 60-tych, których wyniki doprowadziły do korekty najdokładniejszych wtedy rezultatów pomiarów spektroskopowych Herzberga i Monfilsa dla molekuły H$_2$. \cite{kolos60,kolos64,kolos68_improv, kolos68_disc}
+
+Ciągły rozwój metod analityczych i numerycznych oraz wzrost mocy obliczeniowej komputerów sprawia, że pomimo dosyć długiej historii, problem układów dwu- i więcej atomowych jest ciągle aktualny. Zwiększanie precyzji obliczeń ujawinia subtelne rozbieżności pomiędzy teorią a eksperymentem i pozwala stawiać pytania dotyczące nieznanych dotąd oddziaływań pomiędzy podstawowymi składnikami materii.
+
+W tej pracy przedstawiono podstawy teoretyczne prowadzące do otrzymania dokładnej funkcji falowej przy wykorzystaniu metod przybliżonych mechaniki kwantowej. Otrzymano elektronowe funkcje falowe dla molekuły H$_2$ na podstawie metod opisanych w \cite{pachucki2010,pachucki2012,pachucki2013,pachucki2013a} dla szerokiego zakresu wartości parametru $\Omega$ i odległości międzyjądrowej $R$. Na tej podstawie obliczono element macierzowy $\braket{\delta({\vec{r}_{12}})}$ wg. wzorów otrzymanych w sekcji \ref{sec:delta} i przebadano jego zależność od $R$. Procedury potrzebne do wyliczania elementu macierzowego zaimplementowano w języku \emph{FORTRAN}.
+\newpage
+
+%
+% SEKCJA 3. Opis molekuł w mechanice kwantowej
+%
+\section{Opis molekuł w ujęciu mechaniki kwantowej}
+
+Molekuła w ujęciu mechaniki kwantowej jest zbiorem $N$ jąder i $n$ elektronów traktowanych jako ładunki punktowe. Aby uzyskać informacje o stanach stacjonarnych takiego układu należy znaleźć rozwiązanie równania Schr\"{o}dingera niezależnego od czasu:
+
+\begin{equation} \label{eq:schrodinger}
+\hat{H}\psi = E \psi
+\end{equation}
+gdzie $\hat{H}$ - hamiltonian układu, $\psi$ - funkcja falowa, $E$ - energia.
+
+Hamiltonian cząsteczki, z pominięciem efektów związanych z kwantową elektrodynamiką oraz bez poprawek relatywistycznych (a zatem bez uwzględnienia spinu), wyraża się wzorem:
+
+\begin{equation} \label{eq:hamiltonian}
+\hat{H} = - \frac{1}{2} \sum\limits_{i}^n \Delta_i  - \sum\limits_{j}^{N} \frac{1}{2M_j}\Delta_j -  \sum\limits_{i, j}^{n, N} \frac{Z_j}{|\vec{r}_i - \vec{R}_j|} + \frac{1}{2} \sum\limits_{i \neq j}^{n} \frac{1}{|\vec{r}_i - \vec{r}_j|} + \frac{1}{2} \sum\limits_{i \neq j}^{N} \frac{Z_i Z_j}{|\vec{R}_i - \vec{R}_j|}
+\end{equation}
+gdzie przyjęto jednostki atomowe: $m_e = e = \hbar = \varepsilon_0 = 1$, $\Delta_i$ oznacza operator Laplace'a po współrzędnych $i$-tej cząstki, $M_i$ masę $i$-tego jądra, $Z_i$ ładunek $i$-tego jądra, $\vec{r}_i$ wektor położenia $i$-tego elektronu, a $\vec{R}_i$ wektor położenia $i$-tego jądra. 
+
+Rozwiązanie zagadnienia własnego danego równaniem \eqref{eq:schrodinger} daje zbiór ortonormalnych funkcji własnych $\{\psi_n\}$ i odpowiadających im energii $\{E_n\}$ opisująch dany układ. Znalezienie ścisłego rozwiązania jest możliwe jedynie w nielicznych przypadkach (np. atom wodoru). Nie jest to możliwe dla układów wielocentrowych i wieloelektronowych ze względu na obecność członów związanych z oddziaływaniem coulombowskim. W celu uzyskania informacji o bardziej skomplikowanych układach niezbędne jest użycie metod przybliżonych. Ich podstawowe idee są przedstawione w sekcji \ref{sec:metody}.
+
+%
+% SEKCJA 4. Metody przybliżone
+%
+\section{Metody przybliżone} \label{sec:metody}
+
+% PODSEKCJA 4.1
+\subsection{Zasada wariacyjna} \label{sec:wariacyjna}
+
+Energia stanu opisanego funkcją falową $\psi$ jest średnią wartością hamiltonianu:
+\begin{equation} \label{eq:energia}
+E = \frac{\bra{\psi}\hat{H}\ket{\psi}}{\braket{\psi|\psi}}.
+\end{equation}
+
+Energię stanu podstawowego $\psi_0$ oznaczmy jako $E_0$. Jest to najniższa energia dostępna temu układowi. W przypadku, gdy nie potrafimy rozwiązać zagadnienia własnego danego układu (równanie \eqref{eq:schrodinger}) nie znamy postaci funkcji falowej $\psi_0$, a zatem nie możemy obliczyć wartości $E_0$. Aby otrzymać górne ograniczenie na energię stanu podstawowego należy odwołać się do zasady wariacyjnej.
+
+Reguła ta mówi, że funkcjonał:
+
+\begin{equation} \label{eq:wariacyjna}
+\epsilon[\psi] = \frac{\bra{\psi}\hat{H}\ket{\psi}}{\braket{\psi|\psi}}
+\end{equation}
+dla dowolnej funkcji $\psi$ (nazywanej funkcją próbną) osiąga wartość nie mniejszą niż $E_0$, \mbox{a równość} zachodzi tylko dla $\psi = \psi_0$.
+
+Funkcja próbna $\psi$ musi być określona na tej samej przestrzeni co hamiltonian oraz być normalizowalna. Ponadto, przy wyborze funkcji próbnej należy kierować się jej własnościami analitycznymi oraz właściwym odzwierciedleniem problemu fizycznego. Wybór najbardziej odpowiedniej funkcji w istotny sposób wpływa na skuteczność i dokładność rozwiązania.
+
+Wygodnie rozpatrywać jest całe klasy funkcji, tzn. uzależnić funkcję $\psi$ od pewnych parametrów i szukać minimum wyrażenia:
+
+\begin{equation} \label{eq:parametry}
+\epsilon[\psi(a_1,a_2, ... ,a_n)] = \frac{\bra{\psi(a_1,a_2, ... ,a_n)}\hat{H}\ket{\psi(a_1,a_2, ... ,a_n)}}{\braket{\psi(a_1,a_2, ... ,a_n)|\psi(a_1,a_2, ... ,a_n)}}
+\end{equation}
+ze względu na parametry funkcji $\psi(a_1,a_2, ... ,a_n)$.
+% PODSEKCJA 4.2
+\subsection{Metoda Ritza}
+Metoda Ritza opiera się na opisanej w sekcji \ref{sec:wariacyjna} zasadzie wariacyjnej. Funkcja falowa przedstawiona jest jako kombinacja liniowa funkcji bazy:
+
+\begin{equation} \label{eq:ritz}
+\Psi = \sum\limits_{i=1}^N c_i \phi_i
+\end{equation}
+gdzie: $\phi_i$ - funkcja bazy, $c_i$ - współczynniki rozwinięcia, N - ilość funkcji bazy.\\
+Następnie, wstawiając funkcję $\Psi$ do funkcjonału \eqref{eq:wariacyjna}, otrzymuje się wyrażenie \cite{piela}:
+
+\begin{equation}
+\epsilon(c_1, c_2, ..., c_N) = \frac{\sum_{i,j=1}^N c_i^* c_j H_{ij}}{\sum_{i,j=1}^N c_i^* c_j S_{ij}}
+\end{equation}
+gdzie przyjęto oznaczenia:
+\begin{equation}
+H_{ij} = \bra{\phi_i} \hat{H} \ket{\phi_j}, \hspace{1cm} S_{ij} = \braket{\phi_i|\phi_j}
+\end{equation}
+minimalizacja tego wyrażenia prowadzi do tzw. uogólnionego zagadnienia własnego:
+\begin{equation} \label{eq:wlasne}
+\sum\limits_{i=1}^N c_i (H_{ij} - \epsilon S_{ij}) = 0.
+\end{equation}
+Rozwiązanie tego zagadnienia daje zbiór wartości własnych $\{\epsilon_i\}$. Oznaczmy najmniejszą otrzymaną wartość jako $\epsilon_0$, jest to wariacyjne górne oszacowanie energii stanu podstawowego. Znajdując wektor własny $\vec{c}$  odpowiadający energii $\epsilon_0$ otrzymujemy rozkład funkcji $\Psi$ w bazie $\{\phi_i\}$.
+
+\newpage
+% PODSEKCJA 4.3
+\subsection{Przybliżenie Borna - Oppenheimera} \label{sec:born-oppenheimer}
+Rozważmy tutaj cząsteczkę dwuatomową, oznaczmy położenia jąder jako $\vec{R}_A$ i $\vec{R}_B$, wektor ich wzajemnego położenia $\vec{R} = \vec{R}_A - \vec{R}_B$, a $\vec{\mathcal{R}}$ wektor położenia środka masy cząsteczki. Wybierając układ współrzędnych związany ze środkiem masy molekuły hamiltonian dany wzorem \eqref{eq:hamiltonian} przekształca się do wyrażenia \cite{piela}:
+\begin{equation} \label{eq:ham_com}
+\hat{H} = -\frac{1}{2M} \Delta_{\mathcal{R}} + \hat{H}_0 + \hat{H}'
+\end{equation}
+gdzie: $M$ - masa molekuły, a $\Delta_{\mathcal{R}}$ - Laplasjan po współrzędnych środka masy układu, zatem pierwszy człon wyrażenia jest operatorem energii kinetycznej molekuły.  Energia związana z ruchem postępowym całej cząsteczki nie będzie nas interesować, zatem pierwszy człon hamiltonianu będziemy pomijać.
+$\hat{H}_0$ jest hamiltonianem elektronowym danym wyrażeniem:
+\begin{equation} \label{eq:elektronowy}
+\hat{H}_0 = -\frac{1}{2}\sum\limits_{i=1}^n \Delta_i + V 
+\end{equation}
+w powyższym wyrażeniu jako $V$ oznaczono wszystkie oddziaływania potencjalne układu:
+\begin{equation}
+V = -  \sum\limits_{i, j}^{n, N} \frac{Z_j}{|\vec{r}_i - \vec{R}_j|} + \frac{1}{2} \sum\limits_{i \neq j}^{n} \frac{1}{|\vec{r}_i - \vec{r}_j|} + \frac{1}{2} \sum\limits_{i \neq j}^{N} \frac{Z_i Z_j}{|\vec{R}_i - \vec{R}_j|}
+\end{equation}
+$\hat{H}'$ definiujemy następująco:
+\begin{equation}
+\hat{H}' = -\frac{1}{2\mu} \Delta_R + \hat{H}''
+\end{equation}
+gdzie $\mu$ - masa zredukowana obu jąder, a $\hat{H}''$:
+\begin{equation}
+\hat{H}'' = - \frac{1}{8\mu}\Big(\sum\limits_{i=1}^n \vec{\nabla}_i\Big)^2 - \frac{1}{2}\Big(\frac{1}{M_B} - \frac{1}{M_A}\Big) \vec{\nabla}_R \sum\limits_{i=1}^n \vec{\nabla}_i
+\end{equation}
+
+Zauważmy, że hamiltonian elektronowy \eqref{eq:elektronowy} nie zależy od energii kinetycznej jąder, a jedynie od ich konfiguracji przestrzennej. Różniczkowanie po współrzędnych jąder występuje tylko w $\hat{H'}$ i $\hat{H}''$.
+
+Następnie, czyniąc obserwację, że stosunek masy protonu do masy elektronu wynosi $\frac{m_p}{m_e} \approx 1840$ możemy przejść z masą jąder do nieskończoności \cite{kolos_kw}: $M_A,  M_B \rightarrow \infty$. Pozwala to zapostulować postać funkcji falowej będącej iloczynem funkcji elektronowej $\psi$ i funkcji rotacyjno-wibracyjnej $f$:
+\begin{equation}
+\Psi =  \psi(\vec{r}_1,\ldots,\vec{r}_n;\vec{R})f(\vec{R})
+\end{equation}
+W argumencie funkcji elektronowej wyszczególnione jest wzajemne położenie jąder $\vec{R}$, ponieważ funkcja elektronowa zależy parametrycznie od konfiguracji jąder w układzie ze względu na oddziaływanie coulombowskie ujęte w członie $V$ hamiltonianu elektronowego.
+
+Rozwiązując teraz równanie równanie własne dla operatora $\hat{H}_0$ otrzymamy funkcje i energie elektronowe:
+\begin{equation}
+\hat{H}_0 \psi(\vec{r}_1,\ldots,\vec{r}_n;\vec{R}) = E  \psi(\vec{r}_1,\ldots,\vec{r}_n;\vec{R})
+\end{equation}
+Posługując się tym przybliżeniem możliwe jest obliczenie funkcji rotacyjno-wybracyjnej dla danego stanu elektronowego. W tej pracy będzie nas interesowała tylko funkcja \mbox{i energia} elektronowa, dalsze rozważania pomijamy.
+\newpage
+% PODSEKCJA 4.4
+\subsection{Rachunek zaburzeń}
+Rozważmy układ, którego hamiltonian da się zapisać w postaci:
+\begin{equation}
+\hat{H} = \hat{H}^0 + \lambda\hat{H}'
+\end{equation}
+gdzie $\hat{H}^0$ jest operatorem, dla którego można otrzymać rozwiązanie zagadnienia własnego (analityczne lub stosując metody przybliżone), a operator $\hat{H}'$ opisuje zaburzenie układu. $\lambda$ jest małym parametrem opisującym zaburzenie. Funkcję falową i energię tego układu można rozwinąć w szereg potęgowy względem parametru $\lambda$:
+\begin{eqnarray}
+\psi_k = \sum\limits_{n=0}^\infty \lambda^n \psi_k^{(n)} \\
+E_k = \sum\limits_{n=0}^\infty \lambda^n E_k^{(n)}
+\end{eqnarray}
+Wstawiając funkcję i energię w takiej postaci do równania Schr\"odingera otrzymujemy:
+\begin{equation}
+\sum\limits_{n=0}^\infty \hat{H} \lambda^n \psi_k^{(n)} = \sum\limits_{n,m=0}^\infty \lambda^{n+m} E_k^{(n)}\psi_k^{(m)}
+\end{equation}
+Powyższa równość będzia zachodziła gdy wyrazy rozwinięcia znajdujące się przy odpowiadających sobie potęgach parametru $\lambda$ będą sobie równe. Przyrównując wyrazy rozwinięcia z takimi samymi potęgami $\lambda$ otrzymuje się wyrażenia na kolejne rzędy poprawek do stanów $\psi_k$ i odpowiadających im energii $E_k$. W tej pracy zajmować będziemy się jedynie pierwszą poprawką do energii daną wzorem:
+\begin{equation}
+E_k^{(1)} = \bra{\psi_k^{(0)}}\hat{H}'\ket{\psi_k^{(0)}}
+\end{equation}
+Wyrażenia na poprawki wyższych rzędów i poprawki do stanów tutaj pomijamy.
+\newpage
+%
+% SEKCJA 5. Funkcje jawnie skorelowane
+%
+\section{Korelacja ruchu elektronów}
+W układach wieloelektronowych ruch elektronów nie jest od siebie niezależny ze względu na oddziaływanie coulombowskie między nimi. W niektórych metodach przybliżonych fakt korelacji elektronów nie jest uwzględniany lub jest uwzględniany w sposób pośredni, jak np. w metodzie pola samouzgodnionego (SCF), gdzie dany elektron porusza się w uśrednionym potencjale od pozostałych elektronów. Prowadzi to do systematycznych błędów w obliczaniu energii elektronowej \cite{piela}.
+
+Korelacja elektronowa może być uwzględniona w postaci funkcji falowej w sposób jawny. Wprowadzenie do funkcji falowej członu korelacyjnego zależnego od odległości międzyelektronowej $r_{12}$ prowadzi do tzw. \emph{funkcji jawnie skorelowanych}. Dzięki temu zabiegowi funkcja próbna dobrze odtwarza prawdziwą funkcję falową, co pozwala uzyskiwać bardzo dokładne wyniki.
+
+Ponadto dowodzi się, że fukcja falowa uwzględniająca korelację powinna spełniać tzw. warunek ostrza korelacyjnego (ang. \emph{cusp condition}) w obszarach małych odległości elektron-elektron i elektron-jądro.
+% PODSEKCJA 5.1 Funkcje Hyllerassa
+\subsection{Funkcje Hyllerassa}
+Jawna zależność funkcji falowej od odległości międzyelektronowej została po raz pierwszy uwzględniona przez Egila Hylleraasa w obliczeniach dla atomu helu w 1929 r. Użył on funkcji próbnej w postaci:
+\begin{equation}\label{eq:hylleraas}
+\Psi = e^{-\xi s} \sum\limits_{i=1}^N c_i s^{n_i}t^{2l_i}u^{m_i}
+\end{equation}
+gdzie: $s = r_1 + r_2$, $t = r_1 - r_2$,  $u = r_{12}$, a $r_1$ i $r_2$ to odległości elektronów od jądra, $\xi$ jest parametrem wariacyjnym, $n_i$, $l_i$ i $m_i$ to pewne liczby całkowite.
+
+Już przy użyciu stosunkowo małej bazy funkcja próbna w powyższej postaci dawała bardzo dokładne wyniki. Zadowalające rezultaty uwzględnienia jawnej korelacji wykorzystano więc do obliczeń dla molekuły wodoru.
+
+% PODSEKCJA 5.2 Funkcje Jamesa-Coolidge'a
+\subsection{Funkcje Jamesa-Coolidge'a}
+Koncepcję jawnego uwzględnienia korelacji elektronowej do obliczeń dla molekuły wodoru wykorzystali James i Coolidge \cite{james33} w pracy z 1933 r. Ich funkcja próbna miała postać:
+\begin{equation}
+\Psi = \sum\limits_{i=1}^N c_i\big(\psi_i(\vec{r}_1,\vec{r}_2) + \psi_i(\vec{r}_2,\vec{r}_1)\big)
+\end{equation}
+gdzie: $c_i$ - współczynniki liniowe, a funkcje bazy $\psi_i$ zdefiniowane są następująco:
+\begin{equation}
+\psi_i (\vec{r}_1,\vec{r}_2)= \rho^{\mu_i} \xi_1^{m_i} \eta_1^{k_i} \xi_2^{n_i} \eta_2^{l_i} e^{-\alpha (\xi_1 +  \xi_2)}
+\end{equation}
+ gdzie: $\alpha$ - parametr wariacyjny, $\xi_i = \frac{r_{iA} - r_{iB}}{R}$, $\eta_i = \frac{r_{iA} + r_{iB}}{R}$, a $r_{iA}$, $r_{iB}$ to odległości $i$-tego elektronu od jądra $A$ lub $B$, $R$ - odległość między jądrami, $\rho = \frac{2r_{12}}{R}$, $\mu_i$, $k_i$, $l_i$, $m_i$, $n_i$ - pewne liczby całkowite.
+
+Taka postać funkcji falowej daje bardzo dobre wyniki dla odległości międzyjądrowej bliskiej konfiguracji równowagowej układu. Niestety funkcje Jamesa-Coolidge'a nie spełniają warunku asymptotycznego: dla $R \rightarrow \infty$ powinny dążyć do funkcji Heitlera-Londona.
+
+% PODSEKCJA 5.3 Funkcje Kołosa-Wolniewicza
+\subsection{Funkcje Kołosa-Wolniewicza}
+Kołos i Wolniewicz do obliczeń dla układów dwucentrowych i dwuelektronowych użyli następującej funkcji próbnej \cite{piela}:
+\begin{equation}
+\Psi = \sum\limits_{i=1}^N c_i \big(\Phi_i(1,2) + \Phi_i(2,1)\big)
+\end{equation}
+gdzie indeksy w argumencie funkcji $\Phi_i$ odnoszą się do współrzędnych elektronów, czyli $\Phi_i(1,2) \equiv \Phi_i(\vec{r_1},\vec{r_2})$. $c_i$ to współczynniki liniowe, a funkcja bazy $\Phi_i$ dana jest wzorem:
+\begin{equation}
+\Phi_i(1,2) = e^{-A\xi_1 - \bar{A} \xi_2} \; \xi_1^{m_i} \eta_1^{k_i} \xi_2^{n_i} \eta_2^{l_i} \rho^{\mu_i} \; \big[e^{B\eta_1 + \bar{B} \eta_2} + (-1)^{k_i + l_i} e^{-B\eta_1 - \bar{B}\eta_2} \big]
+\end{equation}
+gdzie: $A$, $\bar{A}$, $B$, $\bar{B}$ - parametry wariacyjne, a pozostałe oznaczenia tak, jak w definicji funkcji bazy Jamesa-Coolidge'a. W przypadku, gdy $A = \bar{A}$ i $B = \bar{B} = 0$ funkcje Kołosa-Wolniewicza stają się funkcjami Jamesa-Coolidge'a, stanowią więc ich uogólnienie.
+
+Prace Kołosa i Wolniewicza w latach 60-tych zbiegły się w czasie z olbrzymim rozwojem mocy obliczeniowej komputerów. Stosując coraz dłuższe rozwinięcia funkcji $\Psi$ uzyskiwano coraz większą dokładność obliczeń. Ich wyniki wykazywały jednak pewną rozbieżność z pomiarami spektroskopowymi Herzberga i Monfilsa. Potwierdzenie dokładności obliczeń teoretycznych doprowadziło do weryfikacji rezultatów eksperymentalych w 1968 r. \cite{kolos68_improv,kolos68_disc}
+%
+% SEKCJA 6. Hamiltonian relatywistyczny
+%
+\newpage
+\section{Hamiltonian Breita-Pauliego} \label{sec:rel}
+Poprawki uwzględniające efekty relatywistyczne dla molekuły H$_2$ można obliczyć używając dwuelektronowego hamiltonianu relatywistycznego Breita-Pauliego, który, przy braku zewnętrznego pola elektrycznego i magnetyczego, wyraża się wzorem \cite{kolos64}:
+\begin{equation}
+\hat{H} = \hat{H_0} + \hat{H_1}+ \hat{H_2}+ \hat{H_3}+ \hat{H_4}+ \hat{H_5}
+\end{equation}
+gdzie $\hat{H_0}$ jest hamiltonianem wynikającym z klasycznej mechaniki kwantowej, dany wzorem \eqref{eq:hamiltonian}, a pozostałe człony powyższego wyrażenia zdefiniowane są następująco:
+\begin{equation}
+\hat{H_1} = -\frac{1}{8}\alpha^2(\Delta_1 + \Delta_2)
+\end{equation}
+\begin{equation}
+\hat{H_2} = \frac{1}{2}\alpha^2 \frac{1}{r_{12}} \big[\vec{\nabla}_1 \vec{\nabla}_2 + \frac{1}{{r_{12}}^3} \vec{r}_{12} ( \vec{r}_{12} \vec{\nabla}_1)\vec{\nabla}_2\big] 
+\end{equation}
+\begin{equation}
+\hat{H_3} = -i \frac{1}{2} \alpha^2 \Big\{ \big[ (-\vec{\nabla}_1 V)\times \vec{\nabla}_1 + \frac{2}{{r_{12}}^3} \vec{r}_{12} \times \vec{\nabla}_2\big]\hat{s}_1 + \big[(-\vec{\nabla}_2 V) \times \vec{\nabla}_2 + \frac{2}{{r_{12}}^3} \vec{r}_{21} \times \vec{\nabla}_1 \big] \hat{s}_2 \Big\}
+\end{equation}
+\begin{equation}
+\hat{H_4} = -\frac{1}{4} \alpha^2 \{\Delta_1  + \Delta_2 \}\: V
+\end{equation}
+\begin{equation}
+\hat{H_5} = \alpha^2 \Big\{ -\frac{8}{3} (\hat{s}_1 \hat{s}_2)\delta^3(\vec{r}_{12}) + \frac{1}{{r_{12}}^3} \big[ \hat{s}_1 \hat{s}_2 - \frac{3}{{r_{12}}^2} (\hat{s}_1 \vec{r}_{12}) (\hat{s}_2 \vec{r}_{12}) \big] \Big\}
+\end{equation}
+gdzie: $\alpha$ - stała struktury subtelnej, $\hat{s}_1$, $\hat{s}_2$ - operatory całkowitego spinu elektronów.
+
+W tej pracy szczególną uwagę poświęcimy poprawce od członu $\hat{H_5}$ dla stanu podstawowego molekuły H$_2$: ${}^1\Sigma_g^+$. Dla tego stanu pierwsza poprawka do energii dana jest wzorem:
+
+\begin{equation}
+\epsilon_5 = 2\pi \alpha^2 \bra{\Psi}\delta^3(\vec{r}_{12})\ket{\Psi}
+\end{equation}
+Drugi człon wartości oczekiwanej tego operatora tożsamościowo znika.
+
+Element macierzowy $\braket{\delta^3(\vec{r}_{12})}$ ma sens prawdopodobieństwa znalezienia dwóch elektronów o przeciwnym spinie w jednym miejscu. Obliczenie tego elementu w bazie gaussowskiej wymaga bardzo długiego rozwinięcia funkcji falowej i prowadzi do obliczania trudnych całek. W bazie slaterowskiej ten element liczy się bardzo łatwo i uzyskuje się większą dokładność niż w bazie gaussowskiej.
+
+Szczegółowa procedura obliczania elementu macierzowego $\braket{\delta^3(\vec{r}_{12})}$ w wybranej przez nas bazie przedstawiona jest w sekcji \ref{sec:delta}.
+
+%
+% SEKCJA 7. Delta(r12)
+%
+\newpage
+\section{Obliczanie elementu macierzowego $4\pi\braket{\delta^3(\vec{r}_{12})}$} \label{sec:delta}
+% PODSEKCJA 7.1 Funkcja próbna
+\subsection{Funkcja próbna} \label{sec:wf}
+Do obliczeń użyta została funkcja próbna w postaci \cite{pachucki2010}:
+\begin{equation}\label{eq:psi}
+	\Psi = \sum_i c_i \: \frac{(1+\hat{P}_{AB})(1+\hat{P}_{12})}{4}\: \phi_i
+\end{equation}
+gdzie $c_i$ - współczynniki liniowe, $\hat{P}_{AB}$ - operator permutacji jąder, $\hat{P}_{12}$ - operator permutacji elektronów, a funkcja bazy $\phi_i$ zdefiniowana jest następująco:
+\begin{multline}
+	\phi =  r_{12}^{n_0} (r_{1A}-r_{1B})^{n_1} (r_{2A}-r_{2B})^{n_2} (r_{1A}+r_{1B})^{n_3} (r_{2A}+r_{2B})^{n_4} \\
+	\times{} e^{-y(r_{1A}-r_{1B})-x (r_{2A}-r_{2B}) -u(r_{1A}+r_{1B}) -w(r_{2A}+r_{2B})} \; R^{-(n_0+n_1+n_2+n_3+n_4+3)}
+\end{multline}
+gdzie przyjęto następującą konwencję: w indeksach dolnych wielkimi literami oznaczono zmienne odnoszące się do jąder, a cyfry odnoszą się do elektronów, zatem np. $r_{1A}$ to odległość elektronu z indeksem $1$ od jądra z indeksem $A$, a $r_{12}$ to odległość międzyelektronowa. $n_i$ - pewne liczby całkowite, $x$, $y$, $u$, $w$ - parametry wariacyjne, $R$ - odległość między jądrami.
+
+Normalizacja funkcji falowej wybrana jest w następujący sposób:
+\begin{equation} \label{eq:norm}
+\braket{\Psi|\Psi} = \int \frac{d^3\mathbf{r}_1}{4\pi}\int \frac{d^3\mathbf{r}_2}{4\pi} \;|\Psi|^2 = 1
+\end{equation}
+
+Ilość funkcji bazy wybiera się uwzględniając warunek:
+\begin{equation}
+\sum\limits_{i=0}^4 n_i= \Omega
+\end{equation}
+gdzie $\Omega$ - pewna liczba całkowita.
+
+Do obliczeń dla stanu podstawowego molekuły wodoru użyto szczególnych przypadków funkcji bazy:
+\begin{itemize}
+\item $x=y=0$, $u=w$ - symetryczna baza Jamesa-Coolidge'a,
+\item $x=-y$, $u=w$ - baza symetryczna.
+\end{itemize}
+
+% PODSEKCJA 7.2 Operatory na funkcje
+\subsection{Symetrie funkcji falowej} \label{sec:operatory}
+Funkcje bazy wykazują następujące symetrie po działaniu na nie operatorami permutacji jąder $\hat{P}_{AB}$ i elektronów $\hat{P}_{12}$:
+\begin{equation} 
+	\hat{P}_{AB}\; \phi(n_0,n_1,n_2,n_3,n_4;y,x,u,w) = (-1)^{n_1+n_2}\;\phi(n_0,n_1,n_2,n_3,n_4;-y,-x,u,w)
+\end{equation}
+\begin{equation}
+	\hat{P}_{12}\; \phi(n_0,n_1,n_2,n_3,n_4;y,x,u,w) = \phi(n_0,n_2,n_1,n_4,n_3;x,y,w,u)
+\end{equation}
+gdzie w zapisie funkcji $\phi$ wyszczególniono jej parametry w argumencie.
+% PODSEKCJA 7.3
+\subsection{Element macierzowy $4\pi\braket{\delta^3(\vec{r}_{12})}$}
+Ze względu na wybraną normalizację funkcji falowej \eqref{eq:norm}, aby uzyskać właściwą wartość elementu $\braket{\delta^3(\vec{r}_{12})}$ należy rozważyć ten element przemnożony przez czynnik $4\pi$. Wstawiając jawnie postać funkcji $\Psi$ daną wzorem \eqref{eq:psi} oraz zauważając, że wystarczająca jest symetryzacja jednej z funkcji falowych, co pozwala na wpisanie w \emph{ket} funkcji w postaci $\Psi = \sum_j c_j \phi_j$, otrzymujemy:
+\begin{equation}
+\begin{split}
+4\pi \bra{\Psi}\delta^3(\vec{r}_{12})\ket{\Psi} & = 4\pi \bra{ \sum_i c_i \: \frac{(1+\hat{P}_{AB})(1+\hat{P}_{12})}{4}\: \phi_i}\delta^3(\vec{r}_{12})\ket{\sum_j c_j  \phi_j}  \\ 
+ & = 4\pi\sum_{i,j} \frac{c_i c_j}{4} \bra{(1+\hat{P}_{AB})(1+\hat{P}_{12})\: \phi_i}\delta^3(\vec{r}_{12})\ket{\phi_j}\\
+ & = 4\pi\sum_{i,j} \frac{c_i c_j}{4}\bra{\phi_i + \hat{P}_{AB}\phi_i + \hat{P}_{12}\phi_i +\hat{P}_{AB}\hat{P}_{12}\phi_i}\delta^3(\vec{r}_{12})\ket{\phi_j}
+\end{split}
+\end{equation}
+Następnie, korzystając z zależności z sekcji~\ref{sec:operatory} oraz przyjmując $y=-x$, możemy podstawić:
+\begin{equation*}
+\hat{P}_{AB}\; \phi = (-1)^{n_1+n_2}\;\phi
+\end{equation*}
+oznaczając $\hat{P}_{12} \phi = \phi'$ i parametry $n_i$ funkcji $\phi_i$ jako $k_i$ otrzymujemy, a parametry $n_i$ funkcji $\phi_j$ jako $p_i$ :
+\begin{equation}
+\begin{split}
+4\pi \bra{\Psi}\delta^3(\vec{r}_{12})\ket{\Psi} & = 4 \pi \sum_{i,j} \frac{c_i c_j}{4} \bra{\phi_i + \hat{P}_{AB} \phi_{i} + \phi_{i}' + \hat{P}_{AB} \phi'}\delta^3(\vec{r}_{12})\ket{\phi_j}\\
+ & = 4 \pi \sum_{i,j} \frac{c_i c_j}{4}\big( 1 + (-1)^{k_1+k_2}\big) \big( \bra{\phi_i} + \bra{\phi_{i}'}\big)\delta^3(\vec{r}_{12})\ket{\phi_j} \\
+ & = 4 \pi \sum_{i,j} \frac{c_i c_j}{4}\big( 1 + (-1)^{k_1+k_2}\big) \big(\braket{\phi_i |\delta^3(\vec{r}_{12})| \phi_j} +\braket{\phi_{i}' |\delta^3(\vec{r}_{12})| \phi_j}\big)
+\end{split}
+\end{equation}
+
+Ponadto, w dalszych rozważaniach można zaobserwować, że odpowiednie nieliniowe parametry są sumowane w podstawieniach $l$ i $m$, zatem elementy $\braket{\phi_i |\delta^3(\vec{r}_{12})| \phi_j}$\\ i $\braket{\phi'_i |\delta^3(\vec{r}_{12})| \phi_j}$ są sobie równe. Upraszcza to poprzedni wzór do postaci:
+ \begin{equation}
+4\pi \bra{\Psi}\delta^3(\vec{r}_{12})\ket{\Psi} = 4 \pi \sum_{i,j} \frac{c_i c_j}{2}\big( 1 + (-1)^{k_1+k_2}\big) \braket{\phi_i |\delta^3(\vec{r}_{12})| \phi_j}
+\end{equation}
+
+Zajmimy się teraz obliczeniem elementu $4\pi\bra{\phi_i}\delta^3(\vec{r}_{12})\ket{\phi_j}$:
+\begin{equation}
+4\pi\bra{\phi_i}\delta^3(\vec{r}_{12})\ket{\phi_j} = 4\pi \int \frac{d^3\mathbf{r}_1}{4\pi} \int \frac{d^3\mathbf{r}_2}{4\pi} \; \phi_i^* \delta^3(\vec{r}_{12}) \phi_j
+\end{equation}
+Wykonując całkowanie po współrzędnych jednego z elektronów otrzymujemy:
+\begin{equation}
+\begin{split}
+4\pi\bra{\phi_i}\delta^3(\vec{r}_{12})\ket{\phi_j} = \delta(k_0 + p_0) & \int \frac{d^3\mathbf{r}}{4\pi} \; (r_A - r_B)^{l}\;(r_A + r_B)^{m}\\
+ & \times{} e^{
+-\alpha(r_A-r_B)-\beta(r_A+r_B)
+} c_R
+\end{split}
+\end{equation}
+ $r_1 = r_2$, więc indeksowanie elektronów można pominąć, $\delta$ oznacza deltę Diraca. Przyjęto następujące oznaczenia:
+\begin{equation*}
+l=k_{3}+k_{4}+p_{3}+p_{4},
+\hspace{1cm} m = k_{1}+k_{2}+p_{1}+p_{2},
+\end{equation*}
+\begin{equation*}
+\alpha = u_i+w_i+u_j+w_j,
+\hspace{1cm}\beta =y_i+x_i+y_j+x_j,
+\end{equation*}
+\begin{equation*}
+c_R =  R^{-(k_{0}+k_{1}+k_{2}+k_{3}+k_{4}+p_{0}+p_{1}+p_{2}+p_{3}+p_{4}+3)}
+\end{equation*}
+Wybierając układ współrzędnych:
+\begin{equation} \label{eq:xieta}
+\eta = \frac{r_A-r_B}{R},
+\hspace{1cm}\xi = \frac{r_A+r_B}{R}, 
+\hspace{1cm} d^3 \mathbf{r} = \left( \frac{R}{2} \right)^3(\xi^2 - \eta^2) d\xi d\eta d\varphi
+\end{equation}
+Poprzednie wyrażenie przekształca się w następujący sposób:
+\begin{equation}
+\begin{split}
+4\pi\bra{\phi_i}\delta^3(\vec{r}_{12})\ket{\phi_j} & = c_R R^{l+m} \frac {\delta(k_{0}+p_{0})}{4\pi}\int d^3 \mathbf{r}\;  \xi^{l}\;\eta^{m}   \; e^{-\alpha R \xi-\beta R \eta} =\\ 
+	&=c_R R^{l+m} \frac {\delta(k_{0}+p_{0})}{4\pi}\int d^3 \mathbf{r}\; \frac{r_A r_B}{r_A r_B} \xi^{l}\;\eta^{m}   \; e^{-\alpha R \xi-\beta R \eta} =\\  
+	&=c_R R^{l+m} \frac {\delta(k_{0}+p_{0})}{4\pi}\int d^3 \mathbf{r}\; \frac{(\frac{R}{2})^2 (\xi^2 - \eta^2)}{r_A r_B} \xi^{l}\;\eta^{m}   \; e^{-\alpha R \xi-\beta R \eta} =\\  
+	&= c_R \frac{R^{l+m+2}}{4} \frac {\delta(k_{0}+p_{0})}{4\pi}\Big[ \int \frac{d^3 \mathbf{r}}{r_A r_B}\; \xi^{l+2}\;\eta^{m}   \; e^{-\alpha R \xi-\beta R \eta} \\
+	&\hspace{0.5cm} - \int \frac{d^3 \mathbf{r}}{r_A r_B}\; \xi^{l}\;\eta^{m+2}   \; e^{-\alpha R \xi-\beta R \eta} \Big]=\\
+	&= c_R\frac {\delta(k_{0}+p_{0})}{4}\Big[\Gamma_{l+2,m}(\alpha,\beta) - \Gamma_{l,m+2}(\alpha,\beta)\Big]
+\end{split}
+\end{equation}
+
+Funkcja $\Gamma_{lm}$ zdefiniowana jest w następnej podsekcji.
+% PODSEKCJA 7.4 Gamma
+\subsection{Funkcja $\Gamma_{lm}(\alpha,\beta)$}
+Rozważmy funkcję $\Gamma_{lm}$ zefiniowaną następująco:
+\begin{equation} \label{eq:gamma}
+	%\boxed{
+\Gamma_{lm}(\alpha,\beta)=\frac{1}{4\pi} \int \frac{d^{3}\mathbf{r}}{r_A r_A} (r_A+r_B)^l (r_A-r_B)^m e^{-\alpha (r_A+r_B) - \beta (r_A-r_B)}
+	%}
+\end{equation}
+Powyższa całka separuje się w zmiennych $\xi$ i $\eta$ danych wzorem \eqref{eq:xieta}:
+\begin{equation}
+	\Gamma_{lm}(\alpha,\beta)=\frac{R^{l+m+1}}{4} \int_1^\infty d\xi \; \xi^l e^{-\alpha R  \xi}\int_{-1}^1 d\eta \; \eta^m e^{-\beta R \eta}=\frac{R^{l+m+1}}{4} \; \Xi_l(\alpha R) \; H_m(\beta R)
+\end{equation}
+Potrzebne zależności dla funkcji $\Xi_l$ i $H_m$ wyprowadzone są następnych podsekcjach.\\
+Wyszczególnujmy tutaj $\Gamma_{00}$, przyjmując $R = 1$:
+\begin{equation}
+	\Gamma_{00}=\frac{1}{4} \frac{e^{-\alpha}}{\alpha}\frac{(e^\beta-e^{-\beta})}{\beta}=\frac{1}{2}\frac{e^{-\alpha}}{\alpha}\frac{\sinh\beta}{\beta}
+\end{equation}
+
+\subsubsection{Funkcja $\Xi_l(\alpha)$}
+
+\begin{equation}
+\Xi_l(\alpha)= \int_1^\infty d\xi \; \xi^l e^{-\alpha \xi}
+\end{equation}
+Całkując przez części można otrzymać nastepujący zwiazek rekurencyjny:
+\begin{equation}
+\Xi_l(\alpha)=\Xi_0(\alpha) + \frac{l}{\alpha}\Xi_{l-1}(\alpha)
+\end{equation}
+gdzie: $\Xi_0(\alpha)=\frac{1}{\alpha}e^{-\alpha}$
+
+\subsubsection{Funkcja $H_m(\beta)$}
+%\footnote{wielkie $\eta$ jest zapisywanie jako $H$; w kodzie funkcja wywolywana jest jako $eta(m,\beta)$}}
+\begin{equation}
+H_m(\beta)=\int_{-1}^1 d\eta \; \eta^m e^{-\beta \eta}
+\end{equation}
+Całkując przez części można otrzymać nastepujący zwiazek rekurencyjny:
+
+\begin{equation}
+H_m(\beta)= \frac{m}{\beta}H_{m-1}(\beta) + \begin{cases}\frac{2}{\beta}\sinh \beta& \text{dla  $m=2k$}\\-\frac{2}{\beta}\cosh \beta& \text{dla $m=2k+1$}
+\end{cases}, k \in \mathbb{Z}
+\end{equation}
+Dodatkowo należy rozważyć przypadek dla $\beta=0$:
+\begin{equation}
+H_m(0)=\int_{-1}^1 d\eta \; \eta^m = \left.\frac{1}{m+1} \; \eta^{m+1}\right|_{-1}^{1}= \frac{1}{m+1}\;(1-(-1)^{m+1})
+\end{equation}
+Wyszczególnijmy tutaj $H_0(\beta)$:
+\begin{equation}
+H_0(\beta) = \frac{2}{\beta} \sinh \beta
+\end{equation}
+%
+% SEKCJA 8. Wyniki
+%
+\newpage
+\section{Wyniki}
+Na podstawie metod opisanych w \cite{pachucki2010,pachucki2012,pachucki2013,pachucki2013a} otrzymano elektronowe funkcje falowe dla molekuły wodoru dla odległości międzyjądrowej od odległości bliskej równowagowej \mbox{$R = 1.4$} do $R = 16$ i w zakresie parametru $\Omega$ od $8$ do $14$. Następnie zaimplementowano procedurę wyliczającą element macierzowy $4\pi\braket{\delta^3(\vec{r}_{12})}$ na podstawie wzorów opisanych w sekcji \ref{sec:delta} w języku \emph{FORTRAN}.
+
+\subsection{Zależność $4\pi\braket{\delta^3(\vec{r}_{12})}$ od parametru $\Omega$}
+Parametr $\Omega$ koresponuje z wielkością bazy użytej do obliczeń. Większy rozmiar bazy oznacza większą dokładność otrzymanych funkcji falowych. Zaobserwowano zbieżność wyników obliczeń $4\pi\braket{\delta^3(\vec{r}_{12})}$ w funkcji parametru $\Omega$. Dla wygody rozpatruje się $4\pi\braket{\delta^3(\vec{r}_{12})}$ przemnożony przez czynnik $e^{2R}$. Zbieżność tej zależności pozwala na dopasowanie funkcji $a + b e^{-c\Omega}$ do otrzymanego przebiegu $4\pi\braket{\delta^3(\vec{r}_{12})}e^{2R}$. Dopasowanie wykonano przy pomocy programu \emph{Mathematica}. Parametr $a$ ma sens wartości $4\pi\braket{\delta^3(\vec{r}_{12})}e^{2R}$ dla dokładnej funkcji falowej. Przykładowa zależność dla $R = 1.4$ wraz z dopasowaną funkcją i zaznaczoną wartością graniczną przedstawiony jest na wykresie \ref{fig:omega}. Wyniki ekstrapolacji dla $\Omega \rightarrow \infty$ dla wszystkich wartości $R$ zebrano w tabeli \ref{tab:ekstrapolacja}.
+\begin{figure}[h!] 
+\label{fig:omega}
+  \centering
+    \includegraphics[width=0.95\textwidth]{./results/r014.png}
+    \caption{Zależność $4\pi\braket{\delta^3(\vec{r}_{12})}e^{2R}$ od parametru $\Omega$ dla odległości międzyjądrowej $R=1.4$. Czerwonymi punktami zaznaczono obliczone wartości, zieloną linią dopasowaną funkcję $a + b e^{-c\Omega}$, a niebieską zaznaczono wartość graniczną dla $\Omega \rightarrow \infty$.}
+\end{figure}
+\subsection{Zależność $4\pi\braket{\delta^3(\vec{r}_{12})}$ od odległości międzyjądrowej $R$}
+Do otrzymanych wartości $4\pi\braket{\delta^3(\vec{r}_{12})}e^{2R}$ dla $\Omega \rightarrow \infty$ dopasowano przy pomocy programu \emph{Mathematica} funkcję $a R^{3/2} e^{-2R}+b R^{1/2}$ dla zakresu $R \in [8,14]$. Otrzymane wyniki wraz z dopasowaną funkcją przedstawiono na wykresie \ref{fig:r}.
+
+\begin{figure}[h!] 
+\label{fig:r}
+  \centering
+    \includegraphics[width=0.95\textwidth]{./results/ekstra.png}
+    \caption{Zależność $4\pi\braket{\delta^3(\vec{r}_{12})}e^{2R}$ od odległości międzyjądrowej $R$. Czerwonymi punktami zaznaczono wyekstrapolowane wartości $4\pi\braket{\delta^3(\vec{r}_{12})}e^{2R}$, a niebieską linią dopasowaną do funkcję $a R^{3/2} e^{-2R}+b R^{1/2}$. Dopasowanie wykonano dla zakresu $R \in [8,14]$. Otrzymano wartości parametrów: $a = 0.03608 \pm 0.00028 $, $b = 0.71347\pm 0.00338$ }
+\end{figure}
+\begin{table}\begin{center}
+\begin{tabular*}{0.6\textwidth}[h!]{@{\extracolsep{\fill} }r r} 
+$R$ (a.u.) & \multicolumn{1}{r}{$\Omega \rightarrow \infty $}\\
+  \hline \hline
+1.4&	0.27534(3)\\
+1.6&	0.32115(1)\\
+1.8&	0.37756(6)\\
+2.0&	0.446155 $\pm 0.000005$\\
+2.2&	0.528362 $\pm 0.000001$\\
+2.4&	0.625137 $\pm 0.000001$\\
+2.6&	0.736634 $\pm 0.000005$\\
+2.8&	0.861865 $\pm 0.000007$\\
+3.0&	0.998331 $\pm 0.000008$\\
+3.5&	1.360271 $\pm 0.000013$\\
+4.0&	1.689974 $\pm 0.000019$\\
+4.5&	1.942825 $\pm 0.000025$\\
+5.0&	2.126081 $\pm 0.000033$\\
+5.5&	2.267745 $\pm 0.000044$\\
+6.0&	2.390785 $\pm 0.000053$\\
+6.5&	2.508280 $\pm 0.000038$\\
+9.0&	3.130274 $\pm 0.000121$\\
+10.0&	3.400355 $\pm 0.000214$\\
+11.0&	3.680871 $\pm 0.000287$\\
+12.0& 3.968681 $\pm 0.000429$\\
+13.0&	4.262713 $\pm 0.000648$\\
+14.0&	4.561952 $\pm 0.001007$\\
+15.0&	4.865016 $\pm 0.001740$\\
+16.0& 5.169629 $\pm 0.003854$\\
+ \hline
+\end{tabular*} \caption{Wartości $4\pi\braket{\delta^3(\vec{r}_{12})}e^{2R}$ w zależności od odległości międzyjądrowej $R$ dla $\Omega \rightarrow \infty$.}\end{center}
+\label{tab:ekstrapolacja}
+\end{table}
+
+
+%\cite{piela,kolos_kw} \cite{dickenson2013}  \cite{pohl2010} \cite{salumbides2013}  \cite{kolos60} \cite{kolos64} \cite{kolos68_improv} \cite{kolos68_disc} \cite{james33} \cite{kolos60,kolos64,kolos68_improv} \cite{pohl13}
+
+%
+% PODSUMOWANIE
+%
+\newpage
+\section{Podsumowanie}
+Przedstawiono podstawowe metody mechaniki kwantowej służące do otrzymania przybliżonych funkcji falowych układów dwuatomowych. Otrzymano funkcje falowe dla szerokiego zakresu wartości parametru $\Omega$ i odległości międzyjądrowej $R$. Otrzymane funkcje falowe wykorzystano do obliczeń elementu macierzowego $4\pi\braket{\delta^3(\vec{r}_{12})}$ i wyliczono jego wartości dla $\Omega \rightarrow \infty$, co odpowiada wartości dla dokładnej funkcji falowej.
+
+Praca stanowi przykład wykorzystania funkcji falowej otrzymanej w bazie opisanej w sekcji \ref{sec:wf} do obliczania elementów macierzowych mających znaczenie w poprawkach do energii wynikających z uwzględnienia efektów relatywistycznych opisanych w sekcji \ref{sec:rel}.
+%
+% BIBLIOGRAFIA
+%
+\bibliographystyle{apsrev}
+\bibliography{bibl}
+
+%
+% END OF DOCUMENT
+%
+\end{document}
