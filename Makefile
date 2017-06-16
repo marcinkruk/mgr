@@ -1,15 +1,8 @@
-LATEX=latexmk
-LFLAGS=-pdf
-LWATCH=-pvc
+all:
+	latexmk -pdf
 
-all: thesis.pdf
-
-thesis.pdf: thesis.tex
-	$(LATEX) $(LFLAGS) thesis.tex
-
-.PHONY: watch
-preview: thesis.tex
-	$(LATEX) $(LFLAGS) $(LWATCH) thesis.tex
+preview:
+	latexmk -pdf -pvc
 
 clean:
-	$(LATEX) -c thesis.tex
+	latexmk -c
