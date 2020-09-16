@@ -1,8 +1,6 @@
-all:
-	latexmk -pdf
+LATEX=rubber
+FLAGS=--pdf
+MAIN=thesis.tex
 
-preview:
-	latexmk -pdf -pvc
-
-clean:
-	latexmk -c
+default:
+	$(LATEX) $(FLAGS) $(MAIN)
