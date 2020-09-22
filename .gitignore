@@ -6,3 +6,5 @@
 *.fdb_latexmk
 *.ps
 *.dvi
+*.bbl
+*.blg
