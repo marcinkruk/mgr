@@ -8,3 +8,4 @@
 *.dvi
 *.bbl
 *.blg
+bibtex/*
