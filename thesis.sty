@@ -2,27 +2,35 @@
 
 \usepackage[T1]{fontenc} % I think I had a solution for this on Magda's computer.
 \usepackage[utf8]{inputenc}
-\usepackage[polish]{babel}
+\usepackage[english]{babel}
 \usepackage{graphicx}
 \usepackage[numbers]{natbib}
 \usepackage{indentfirst}
 
+\usepackage{url}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{braket} % not sure if I'm using any brakets...
 
 \usepackage[stable]{footmisc}
 
+\usepackage{fancyref}
+\newcommand{\fancyrefdeflabelprefix}{def}
+\newcommand{\frefdefname}{definition}
+\frefformat{vario}{\fancyrefdeflabelprefix}{\frefdefname \fancyrefdefaultspacing #1#2}
+
 %\usepackage{showframe}
 %\usepackage[a4paper]{geometry}
 \usepackage{fullpage}
+
+\newtheorem{definition}{Definition}
 
 \renewcommand\thesubsubsection{\thesubsection \alph{subsubsection}}
 \numberwithin{equation}{section}
 \numberwithin{table}{section}
 \numberwithin{figure}{section}
-\addto\captionspolish{\renewcommand{\figurename}{Wykres}}
-\addto\captionspolish{\renewcommand{\tablename}{Tabela}}
+%\addto\captionspolish{\renewcommand{\figurename}{Wykres}}
+%\addto\captionspolish{\renewcommand{\tablename}{Tabela}}
 %\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
 
 \def\arraystretch{1.5}

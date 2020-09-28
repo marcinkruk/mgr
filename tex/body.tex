@@ -1,28 +1,64 @@
-\section{Methodology} \label{methodology}
+\section{Methodology} \label{sec:methodology}
 
-\subsection{Granger causality} \label{granger-causality}
+\subsection{Granger causality and feedback} \label{sec:granger-causality}
 Framework for causality testing was first proposed by Granger \cite{granger69} in 1969.
-The original formulation was based on a linear autoregressive model.
-Consider two time series $X$ and $Y$ of length $n$, which are assumed to be weakly stationary.
-Then, two linear predictors of $Y$ are constructed:
+The original formulation had a general form with an example of a linear autoregressive model provided, further described in \fref{sec:linear-ar}.
+
+Consider two time series $X_t$ and $Y_t$ of length $n$, which are assumed to be weakly stationary.
+Lets denote an optimal, least-squares predictor of some time series $X_t$ given another time series $Y_t$ by $P_t(X|Y)$.
+The residual errors of the model and its variance are defined as follows: 
+$\varepsilon_t(X|Y) = X_t - P_t(X|Y)$ and $\sigma^2(X|Y) = var[\varepsilon_t(X|Y)]$.
+Lastly, all available information until time $t$ will be denoted $U_t$.
+
+Given such notation the following definitions are proposed:
+
+\begin{definition} \label{def:causality}
+	Causality
+
+	If $\sigma^2(X|U) < \sigma^2(X|U-Y)$, then $Y_t$ causes $X_t$, denoted as $Y_t \Rightarrow X_t$.
+\end{definition}
+
+\begin{definition}
+	Feedback
+
+	If $\sigma^2(X|U) < \sigma^2(X|U-Y)$ and $\sigma^2(Y|U) < \sigma^2(Y|U-X)$, then there is feedback between $X_t$ and $Y_t$, denoted as $Y_t \Leftrightarrow X_t$.
+\end{definition}
+
+The completely impractical aspect of the formulation above is having access to the full information $U_t$.
+In practice those definitions allow to construct statistical tests and validate proposed predictors.
+
+\subsubsection{Linear autoregressive model} \label{sec:linear-ar}
+A simple realization of Granger causality test can be implemented using a two-variable linear autoregressive (AR) model of order $p$.
+Two linear predictors of $X_t$ can be constructed as follows:
 
 \begin{equation}
-\bar{Y}_t = \sum_{i=0}^{p} \alpha_i Y_{t-i} + \varepsilon_{Y,t}
+X_t = \sum_{i=1}^{p} \alpha_i X_{t-i} + \varepsilon_{X,t}
 \end{equation}
 
 \begin{equation}
-\tilde{Y}_t = \sum_{i=0}^{p} a_i X_{t-i} \sum_{i=0}^{p} b_i Y_{t-i} + \varepsilon_{Y|X,t}
+X_t = \sum_{i=1}^{p} a_i X_{t-i} + \sum_{i=1}^{p} b_i Y_{t-i} + \varepsilon_{X|Y,t}
 \end{equation}
 
-where: $p$ is the order of AR model, $\alpha$, $a$, $b$ are linear coefficients and $\varepsilon_{Y,t}$ $\varepsilon_{Y|X,t}$ are residual errors of the models.
+where: $p$ is the order of AR model, $\alpha$, $a$, $b$ are scalar coefficients and $\varepsilon_{X,t}$, $\varepsilon_{X|Y,t}$ are residual errors of the models.
+Causal relationship $Y_t \Rightarrow X_t$ can be inferred by comparing variance of residual errors $\varepsilon_{X,t}$ and $\varepsilon_{X|Y,t}$, as stated in \fref{def:causality} in \fref{sec:granger-causality}.
+%If $\sigma^2_{X|Y,t} > \sigma^2_X$ then $Y_t \Rightarrow X_t$
+%Then, comparing variance of residual error produces a Granger causality index:
+%\begin{equation}
+%	C_{Y \Rightarrow X} = ln \frac{\sigma^2_{X}}{\sigma^2_{X|Y}}
+%\end{equation}
+%where, $\sigma^2_{X}$ and $\sigma^2_{X|Y}$ are variances of $\varepsilon_{X,t}$ and $\varepsilon_{X|Y,t}$ respectively.
+%If $C_{Y \Rightarrow X} > 0$, that is $\sigma^2_{X} > \sigma^2_{X|Y}$, then 
+%$Y_t \Rightarrow X_t$.
+
+
 
 \subsubsection{Diks-Panchenko method}
 
 \subsection{Wavelet decomposition}
 \subsubsection{Daubechies wavelet}
 
-\section{Dataset} \label{data}
+\section{Dataset} \label{sec:data}
 
-\section{Results} \label{results}
+\section{Results} \label{sec:results}
 
-\section{Conclusion} \label{conclusion}
+\section{Conclusion} \label{sec:conclusion}
