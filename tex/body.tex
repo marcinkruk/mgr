@@ -24,8 +24,8 @@ Given such notation the following definitions are proposed:
 	If $\sigma^2(X|U) < \sigma^2(X|U-Y)$ and $\sigma^2(Y|U) < \sigma^2(Y|U-X)$, then there is feedback between $X_t$ and $Y_t$, denoted as $Y_t \Leftrightarrow X_t$.
 \end{definition}
 
-The completely impractical aspect of the formulation above is having access to the full information $U_t$.
-In practice those definitions allow to construct statistical tests and validate proposed predictors.
+The completely unrealistic aspect of the formulation above is having access to the full information $U_t$.
+In practice those definitions allow to construct statistical tests and to reason for causal relations between time series.
 
 \subsubsection{Linear autoregressive model} \label{sec:linear-ar}
 A simple realization of Granger causality test can be implemented using a two-variable linear autoregressive (AR) model of order $p$.
@@ -50,15 +50,9 @@ Causal relationship $Y_t \Rightarrow X_t$ can be inferred by comparing variance 
 %If $C_{Y \Rightarrow X} > 0$, that is $\sigma^2_{X} > \sigma^2_{X|Y}$, then 
 %$Y_t \Rightarrow X_t$.
 
-
-
 \subsubsection{Diks-Panchenko method}
-
 \subsection{Wavelet decomposition}
 \subsubsection{Daubechies wavelet}
-
 \section{Dataset} \label{sec:data}
-
 \section{Results} \label{sec:results}
-
 \section{Conclusion} \label{sec:conclusion}
