@@ -7,6 +7,8 @@
 \usepackage[numbers]{natbib}
 \usepackage{indentfirst}
 
+\usepackage{mathrsfs}
+
 \usepackage[hidelinks]{hyperref}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -14,10 +16,10 @@
 
 \usepackage[stable]{footmisc}
 
-\usepackage{fancyref}
+\usepackage[plain]{fancyref}
 \newcommand{\fancyrefdeflabelprefix}{def}
 \newcommand{\frefdefname}{definition}
-\frefformat{vario}{\fancyrefdeflabelprefix}{\frefdefname \fancyrefdefaultspacing #1#2}
+\frefformat{plain}{\fancyrefdeflabelprefix}{\frefdefname \fancyrefdefaultspacing #1}
 
 %\usepackage{showframe}
 %\usepackage[a4paper]{geometry}

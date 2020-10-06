@@ -17,7 +17,6 @@ Given such notation the following definitions are proposed:
 
 	If $\sigma^2(X|U) < \sigma^2(X|U-Y)$, then $Y_t$ causes $X_t$, denoted as $Y_t \Rightarrow X_t$.
 \end{definition}
-
 \begin{definition}
 	Feedback
 
@@ -34,11 +33,9 @@ Two linear predictors of $X_t$ can be constructed as follows:
 \begin{equation}
 X_t = \sum_{i=1}^{p} \alpha_i X_{t-i} + \varepsilon_{X,t}
 \end{equation}
-
 \begin{equation}
 X_t = \sum_{i=1}^{p} a_i X_{t-i} + \sum_{i=1}^{p} b_i Y_{t-i} + \varepsilon_{X|Y,t}
 \end{equation}
-
 where: $p$ is the order of AR model, $\alpha$, $a$, $b$ are scalar coefficients and $\varepsilon_{X,t}$, $\varepsilon_{X|Y,t}$ are residual errors of the models.
 Causal relationship $Y_t \Rightarrow X_t$ can be inferred by comparing variance of residual errors $\varepsilon_{X,t}$ and $\varepsilon_{X|Y,t}$, as stated in \fref{def:causality} in \fref{sec:granger-causality}.
 %If $\sigma^2_{X|Y,t} > \sigma^2_X$ then $Y_t \Rightarrow X_t$
@@ -51,8 +48,50 @@ Causal relationship $Y_t \Rightarrow X_t$ can be inferred by comparing variance 
 %$Y_t \Rightarrow X_t$.
 
 \subsubsection{Diks-Panchenko method}
-\subsection{Wavelet decomposition}
+\cite{diks-panchenko2004}
+\cite{hiemstra-jones}
+\cite{baek-brock1992}
+
+\subsection{Wavelet transform}
+The term ``wavelet'' was coined by Grossmann and Morlet \cite{grossmann-morlet}  in the 1980s. 
+The theory for this approach was further developed by many researchers, most notably Daubechies \cite{daubechies1990}.
+
+A wavelet can be intuitively understood as a ``short, localized oscillation''.
+The so-called mother wavelet, denoted as $\psi(t)$ is a function that satisfies the following conditions:
+
+\begin{equation}
+	\int\! dt \: \psi (t) = 0
+\end{equation}
+
+\begin{equation}
+	\int\! dt \: |\psi (t)|^2 = 1
+\end{equation}
+and the \emph{admissability condition}:
+\begin{equation}
+	\int\! d\omega \: |\omega|^{-1} \left(\mathscr{F} \psi\right)(\omega) < \infty
+\end{equation}
+where $\left(\mathscr{F} \psi\right)(\omega)$ is the Fourier transform of $\psi(t)$.
+
+This function is then dilated and translated to account for frequency and localization:
+
+\begin{equation}
+	\psi^{(a,b)}(t) = \frac{1}{\sqrt{a}} \: \psi\left(\frac{t-b}{a}\right)
+\end{equation}
+The continuous wavelet transform $W(a,b)$ is a projection of the original signal $x(t)$ on the mother wavelet:
+
+\begin{equation}
+	W(a,b) = \int \! dt \: x(t) \psi^{(a,b)}(t)
+\end{equation}
+
+There are several widely used wavelet bases, typical examples are: Haar, Morlet, ``Mexican hat'' and Daubechies.
+The mother wavelets of those examples are plotted on TODO: FIGURE WAVELETS.
+
+\cite{practical-wavelet}, \cite{daubechies1990}
 \subsubsection{Daubechies wavelet}
+
+\subsection{Multiresolution decomposition}
+\cite{mallat1989}
+
 \section{Dataset} \label{sec:data}
 \section{Results} \label{sec:results}
 \section{Conclusion} \label{sec:conclusion}
