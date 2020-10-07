@@ -28,11 +28,14 @@
 \newtheorem{definition}{Definition}
 
 \renewcommand\thesubsubsection{\thesubsection \alph{subsubsection}}
-\numberwithin{equation}{section}
+%\numberwithin{equation}{section}
 \numberwithin{table}{section}
 \numberwithin{figure}{section}
 %\addto\captionspolish{\renewcommand{\figurename}{Wykres}}
 %\addto\captionspolish{\renewcommand{\tablename}{Tabela}}
 %\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+
+\newlength{\minipagewidth}
+\setlength{\minipagewidth}{0.49\textwidth}
 
 \def\arraystretch{1.5}

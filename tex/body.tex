@@ -38,32 +38,24 @@ X_t = \sum_{i=1}^{p} a_i X_{t-i} + \sum_{i=1}^{p} b_i Y_{t-i} + \varepsilon_{X|Y
 \end{equation}
 where: $p$ is the order of AR model, $\alpha$, $a$, $b$ are scalar coefficients and $\varepsilon_{X,t}$, $\varepsilon_{X|Y,t}$ are residual errors of the models.
 Causal relationship $Y_t \Rightarrow X_t$ can be inferred by comparing variance of residual errors $\varepsilon_{X,t}$ and $\varepsilon_{X|Y,t}$, as stated in \fref{def:causality} in \fref{sec:granger-causality}.
-%If $\sigma^2_{X|Y,t} > \sigma^2_X$ then $Y_t \Rightarrow X_t$
-%Then, comparing variance of residual error produces a Granger causality index:
-%\begin{equation}
-%	C_{Y \Rightarrow X} = ln \frac{\sigma^2_{X}}{\sigma^2_{X|Y}}
-%\end{equation}
-%where, $\sigma^2_{X}$ and $\sigma^2_{X|Y}$ are variances of $\varepsilon_{X,t}$ and $\varepsilon_{X|Y,t}$ respectively.
-%If $C_{Y \Rightarrow X} > 0$, that is $\sigma^2_{X} > \sigma^2_{X|Y}$, then 
-%$Y_t \Rightarrow X_t$.
 
 \subsubsection{Diks-Panchenko method}
 \cite{diks-panchenko2004}
 \cite{hiemstra-jones}
 \cite{baek-brock1992}
 
-\subsection{Wavelet transform}
+\subsection{Wavelet transform} \label{sec:wavelet}
 The term ``wavelet'' was coined by Grossmann and Morlet \cite{grossmann-morlet}  in the 1980s. 
 The theory for this approach was further developed by many researchers, most notably Daubechies \cite{daubechies1990}.
 
 A wavelet can be intuitively understood as a ``short, localized oscillation''.
 The so-called mother wavelet, denoted as $\psi(t)$ is a function that satisfies the following conditions:
 
-\begin{equation}
+\begin{equation} \label{eq:wavelet-zero-mean}
 	\int\! dt \: \psi (t) = 0
 \end{equation}
 
-\begin{equation}
+\begin{equation} \label{eq:wavelet-norm}
 	\int\! dt \: |\psi (t)|^2 = 1
 \end{equation}
 and the \emph{admissability condition}:
@@ -85,6 +77,75 @@ The continuous wavelet transform $W(a,b)$ is a projection of the original signal
 
 There are several widely used wavelet bases, typical examples are: Haar, Morlet, ``Mexican hat'' and Daubechies.
 The mother wavelets of those examples are plotted on TODO: FIGURE WAVELETS.
+
+\subsubsection{Discrete wavelet transform}
+For practical purposes, to analyze real-life discrete time series, a discrete wavelet transform (DWT) is used.
+It allows to decompose time series into multiple frequency scales.
+
+The DWT is based on two discrete wavelet filters, called \emph{mother wavelet}
+(which is a high-pass filter):
+\begin{equation}
+h_l=(h_0, h_1\ldots h_{L-1})
+\end{equation}
+and \emph{father wavelet} (a low-pass filter):
+\begin{equation}
+g_l=(g_0, g_1\ldots g_{L-1}).
+\end{equation}
+where $L$ is length of the filter.
+
+In the disrete case, conditions \ref{eq:wavelet-zero-mean} and \ref{eq:wavelet-norm} for the mother wavelet become:
+
+\begin{equation}
+	\sum_{i=0}^{L-1} h_i = 0
+\end{equation}
+
+\begin{equation}
+	\sum_{i=0}^{L-1} |h_i|^2 = 1.
+\end{equation}
+Additionally, $h_l$ is orthogonal to even shifts:
+
+\begin{equation}
+	\sum_{i=0}^{L-1} h_i h_{i+2n} = 0
+\end{equation}
+for all $n \neq 0$.
+
+The father wavelet is constructed from the mother wavelet using the quadrature mirror relation:
+\begin{equation}
+	g_l = (-1)^{l+1} \:  h_{L-1-l}.
+\end{equation}
+Moreover, the scaling filter $g_l$ has the following properties:
+\begin{center}
+\noindent
+\begin{minipage}[t]{\minipagewidth}
+\begin{equation}
+	\sum_{i=0}^{L-1} g_i = \sqrt{2},
+\end{equation}
+\end{minipage}
+\begin{minipage}[t]{\minipagewidth}
+\begin{equation}
+	\sum_{i=0}^{L-1} |g_i|^2 = 1,
+\end{equation}
+\end{minipage}
+
+\begin{minipage}[t]{\minipagewidth}
+\begin{equation}
+	\sum_{i=0}^{L-1} g_i g_{i+2n} = 0,
+\end{equation}
+\end{minipage}
+\begin{minipage}[t]{\minipagewidth}
+\begin{equation}
+	\sum_{i=0}^{L-1} g_i h_{i+2n} = 0.
+\end{equation}
+\end{minipage}
+\end{center}
+
+In the discrete case dilations and translations of mother wavelet are expressed as:
+$a=2^{-j}$ and $b=k 2^{-j}$, where $j, k \in \mathbb{N}$ and $j \leq J = log_2(T)$.
+$J$ is the biggest number of scales and $T$ is the length of the time series.
+
+TODO: describe what DWT is practically: low pass, high pass, pyramid scheme and what $X_t$ look like after some iterations.
+
+
 
 \cite{practical-wavelet}, \cite{daubechies1990}
 \subsubsection{Daubechies wavelet}
