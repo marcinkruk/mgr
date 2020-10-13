@@ -34,8 +34,8 @@ set arrow from 0.5,-1 to 0.5,1 nohead dashtype 3 linecolor rgbcolor "#0080FF"
 set arrow from 1,-1 to 1,0 nohead dashtype 3 linecolor rgbcolor "#0080FF"
 
 # PLOT
-set term pngcairo
-set output "haar.png"
+set term svg enhanced fontscale 2
+set output "haar.svg"
 plot \
 f(x) lt 1 lw 2 lc rgbcolor "#0080FF",\
 g(x) lt 1 lw 2 lc rgbcolor "#0080FF",\

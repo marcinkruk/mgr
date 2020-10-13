@@ -34,7 +34,7 @@ f(x) = c * pi**(-0.25) * exp(-0.5 * (s*x)**2) * (exp(i*sigma*s*x) - k)
 
 
 # PLOT
-set term pngcairo
-set output "morlet.png"
+set term svg enhanced fontscale 2 
+set output "morlet.svg"
 plot \
 real(f(x)) lt 1 lw 2 lc rgbcolor "#0080FF"

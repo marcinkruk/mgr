@@ -29,7 +29,7 @@ c = 2/(sqrt(3*sigma)*pi**(0.25))
 f(x) = c * (1 - (x/sigma)**2) * exp(-x**2/(2*sigma**2))
 
 # PLOT
-set term pngcairo
-set output "mexican.png"
+set term svg enhanced fontscale 2
+set output "mexican.svg"
 plot \
 f(x) lt 1 lw 2 lc rgbcolor "#0080FF"
