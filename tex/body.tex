@@ -76,7 +76,29 @@ The continuous wavelet transform $W(a,b)$ is a projection of the original signal
 \end{equation}
 
 There are several widely used wavelet bases, typical examples are: Haar, Morlet, ``Mexican hat'' and Daubechies.
-The mother wavelets of those examples are plotted on TODO: FIGURE WAVELETS.
+The mother wavelets of those examples are plotted on \fref{fig:wavelets}.
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}{\minipagewidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/haar.eps}
+		\caption{}
+	\end{subfigure}
+	\begin{subfigure}{\minipagewidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/morlet.eps}
+		\caption{}
+	\end{subfigure}
+	\newline
+	\begin{subfigure}{\minipagewidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/mexican.eps}
+		\caption{}
+	\end{subfigure}
+	\caption{Mother wavelets of (a) Haar (b) Morlet and (c) Mexican hat.}
+	\label{fig:wavelets}
+\end{figure}
 
 \subsubsection{Discrete wavelet transform}
 For practical purposes, to analyze real-life discrete time series, a discrete wavelet transform (DWT) is used.
