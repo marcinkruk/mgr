@@ -1,0 +1,29 @@
+\begin{figure}
+\centering
+\begin{tikzpicture}
+% TOP RECTANGLES
+	\draw[rounded corners] (0,0) rectangle ++(1.5,1) node[pos=0.5]{$X_t$};
+	\draw[rounded corners] (3,0) rectangle ++(1.5,1) node[pos=0.5]{$v_1$};
+	\draw[rounded corners] (6,0) rectangle ++(1.5,1) node[pos=0.5]{$v_2$};
+	\draw[rounded corners] (11,0) rectangle ++(1.5,1) node[pos=0.5]{$v_J$};
+% BOTTOM RECTANGLES
+	\draw[rounded corners] (3,-2) rectangle ++(1.5,1) node[pos=0.5]{$w_1$};
+	\draw[rounded corners] (6,-2) rectangle ++(1.5,1) node[pos=0.5]{$w_2$};
+	\draw[rounded corners] (11,-2) rectangle ++(1.5,1) node[pos=0.5]{$w_J$};
+% ARROWS
+	\draw[thick, -{Latex}] (1.55,0.5) -- ++(1.4,0);
+	\draw[thick, -{Latex}] (4.55,0.5) -- ++(1.4,0);
+	\draw[thick, -{Latex}, dashed] (7.55,0.5) -- ++(3.4,0);
+
+	\draw[thick, -{Latex}] (1.5,0) -- ++(1.5,-1.0);
+	\draw[thick, -{Latex}] (4.5,0) -- ++(1.5,-1.0);
+	\draw[thick, -{Latex}, dashed] (7.5,0) -- ++(3.5,-1.0);
+% TEXT
+	\node at (3.75,1.5) {$i=1$};
+	\node at (6.75,1.5) {$i=2$};
+	\node at (9.25,1.5) {$\dots$};
+	\node at (11.75,1.5) {$i=J$};
+\end{tikzpicture}
+\caption{A graphical representation of discrete wavelet decomposition of time series $X_t$ using the pyramid algorithm.}
+\label{fig:pyramid}
+\end{figure}
