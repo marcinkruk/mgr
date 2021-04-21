@@ -9,4 +9,6 @@
 *.bbl
 *.blg
 *.out
+*.bcf
+*.xml
 bibtex/*
