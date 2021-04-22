@@ -1,0 +1,28 @@
+\section{Datasets and software} \label{sec:data}
+
+\subsection{Datasets}
+
+Mothly data for crude oil price and U.S. dollar exchange rate for time period from 1974 to 2019 was analyzed.
+
+Data for "U.S. Crude Oil First Purchase Price" comes from U.S. Energy Information Administration \cite{crude-oil-data}. The price is expressed in U.S. dollars per barrel.
+
+Data referred to as "U.S. dollar index" is actually "Trade Weighted U.S. Dollar Index".
+It's defined as "a weighted average of the foreign exchange value of the U.S. dollar against a subset of the broad index currencies that circulate widely outside the country of issue".
+The index is set to 100 for March 1973.
+The dataset was issued by The Federal Reserve Bank of St. Louis \cite{usd-data}.
+
+Raw data plot is presented on \fref{fig:raw-data}
+
+\begin{figure}
+	\includegraphics{../data/plot/raw}
+	\caption{Plot of raw input data of crude oil price and U.S. Dollar Index.}
+	\label{fig:raw-data}
+\end{figure}
+
+
+\subsection{Software}
+Data analysis was performed using Python and C programs available on open source licenses.
+NumPy \cite{numpy} and Pandas \cite{reback2020pandas} were used for array handling of input data.
+PyWavelet \cite{pywavelet} was used for wavelet decomposition of time series.
+StatsModels \cite{statsmodels} has an implementation of linear Granger causality test.
+C code from authors of \cite{diks-panchenko2004} was employed for non-linear causality test.
