@@ -11,4 +11,5 @@
 *.out
 *.bcf
 *.xml
+*.toc
 bibtex/*
