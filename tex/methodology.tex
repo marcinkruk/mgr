@@ -207,4 +207,36 @@ The $S_J$ term is the remaining signal trend for scale $J$.
 Such representation of time series will allow to analyze causal links of the original signals in different time scales.
 
 \subsection{Surrogate data}
-Popularized as a method for non-linearity testing by \cite{1992-thelier}, systematic review in \cite{2018-lancaster}.
+
+Infering about statistical properties of time series can be cumbersome when the data set is limited.
+In some circumstances the investigated phenomena are sparse (astrophysics), happening slowly (climate studies) or impossible to reproduce (financial data).
+Sometimes a researcher will have access to only one realization of a physical system.
+Estimating confidence intervals of statistical tests in such cases can pose a real challenge.
+
+To tackle this problem a method called \emph{surrogate data} was adopted in various implementations.
+This method was first invented as a test for nonlinearity by \cite{1992-thelier}.
+An in-depth systematic review of surrogate data for statistical hypothesis testing is presented in \cite{2018-lancaster}.
+
+
+\begin{enumerate}
+\item In time series analysis surrogate data is a method for validating tests for nonlinear effects obtained from a limited data set.
+\item It generates a variation of the original dataset with the same statistical properties, but with nonlinearities removed by:
+    \begin{enumerate}
+    \item by transforming the original dataset,
+    \item or by Monte Carlo simulation if the underlying model if known.
+    \end{enumerate}
+\item By applying a discriminating statistics (in case of this study Granger causality test) to the original data and a set of surrogate data,
+    the tested null hypothesis can be rejected.
+\item This method has proven to be useful for data for which we don't know the underlying model or more samples are hard to obtain:
+    astrophysics, geophysics, biology, climate studies, finance to name a few fields of study.
+\end{enumerate}
+
+It is crucial to choose a method for generating surrogate data suitable for the tested null hypothesis.
+Some types of surrogate generating methods:
+\begin{itemize}
+    \item Monte Carlo generated data
+    \item random permutation (for temporal features),
+    \item Fourier Transform and derivative methods (for nonlinear features)
+    \item pseudo-periodic surrogates (for periodic data)
+\end{itemize}
+
