@@ -181,7 +181,7 @@ Then, applying this scheme again: $X_t = [w_1, w_2, v_2]$, and after $J$ iterati
 
 TODO: \cite{practical-wavelet}, 
 
-\subsection{Multiresolution analysis}
+\subsubsection{Multiresolution analysis}
 Transformed signal can be reconstructed from the coefficients $w$ and $v$ using an inverse wavelet transform.
 Original signal can be split into different scale terms using the wavelet representation proposed by Mallat \cite{mallat1989}:
 \begin{equation} \label{eq:decomposed}
@@ -217,26 +217,20 @@ To tackle this problem a method called \emph{surrogate data} was adopted in vari
 This method was first invented as a test for nonlinearity by Thelier et al. \cite{1992-thelier}.
 An in-depth systematic review of surrogate data for statistical hypothesis testing is presented in \cite{2018-lancaster}.
 
+In principle, surrogate data method allows to obtain artificial instances of the examined data set, which preserve some of its statistics, while destroying the tested feature.
+This can be done either by generating a data set via some modelling (ex. Monte Carlo simulations) or by transforming the original data set in a deliberate manner.
+The modelling approach is often called a \emph{typical realization}, while the data transformation approach is called \emph{constrained realization}.
+The choice of the method is to be judged upon whether the underlying model of the phenomena is known and what kind of feature of data is investigated. 
 
-\begin{enumerate}
-\item In time series analysis surrogate data is a method for validating tests for nonlinear effects obtained from a limited data set.
-\item It generates a variation of the original dataset with the same statistical properties, but with nonlinearities removed by:
-    \begin{enumerate}
-    \item by transforming the original dataset,
-    \item or by Monte Carlo simulation if the underlying model if known.
-    \end{enumerate}
-\item By applying a discriminating statistics (in case of this study Granger causality test) to the original data and a set of surrogate data,
-    the tested null hypothesis can be rejected.
-\item This method has proven to be useful for data for which we don't know the underlying model or more samples are hard to obtain:
-    astrophysics, geophysics, biology, climate studies, finance to name a few fields of study.
-\end{enumerate}
-
-It is crucial to choose a method for generating surrogate data suitable for the tested null hypothesis.
-Some types of surrogate generating methods:
+It is crucial to fit the method for generating surrogate data for the tested null hypothesis.
+Some surrogate generating methods, with examples of different types of features are:
 \begin{itemize}
-    \item Monte Carlo generated data
-    \item random permutation (for temporal features),
-    \item Fourier Transform and derivative methods (for nonlinear features)
-    \item pseudo-periodic surrogates (for periodic data)
+    \item random permutation for temporal features and testing againt random noise,
+    \item Fourier Transform and derivative methods for nonlinear features,
+    \item pseudo-periodic surrogates for periodic data,
+    \item intersubject surrogates for independence testing.
 \end{itemize}
 
+TODO:
+1) general scheme of employing the surrogate data method
+2) what kind of surrogate is used in this study
