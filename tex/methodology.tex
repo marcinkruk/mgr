@@ -39,10 +39,57 @@ X_t = \sum_{i=1}^{p} a_i X_{t-i} + \sum_{i=1}^{p} b_i Y_{t-i} + \varepsilon_{X|Y
 where: $p$ is the order of AR model, $\alpha$, $a$, $b$ are scalar coefficients and $\varepsilon_{X,t}$, $\varepsilon_{X|Y,t}$ are residual errors of the models.
 Causal relationship $Y_t \Rightarrow X_t$ can be inferred by comparing variance of residual errors $\varepsilon_{X,t}$ and $\varepsilon_{X|Y,t}$, as stated in \fref{def:causality} in \fref{sec:granger-causality}.
 
-\subsubsection{Diks-Panchenko method}
-\cite{diks-panchenko2004}
-\cite{hiemstra-jones}
-\cite{baek-brock1992}
+\subsubsection{Diks-Panchenko test}
+
+To capture effects beyond linear causality nonparametric statistical tests are used.
+In principle, such methods infer about some features of a system by constructing statistics on their distributions.
+Those methods, not relying on a linear model, in context of Granger causality, are often called nonlinear Granger causality tests.
+Diks and Panchenko \cite{diks-panchenko2004}, basing on earlier approaches by Hiemstra and Jones \cite{hiemstra-jones} and Baek and Brock \cite{baek-brock1992},
+developed a test for nonlinear Granger causality.
+
+Let $X_t^{l} = (X_t, X_{t-1}, \ldots X_{t-l+1})$ and $Y_t^{l} = (Y_t, Y_{t-1}, \ldots Y_{t-l+1})$
+be lagged vectors of time series. The null hypothesis assumes no causality from $X_t \Rightarrow Y_t$:
+
+\begin{equation} \label{eq:no-causality}
+    Y_{t+1} | (X_t^{l}, Y_t^{l}) \sim Y_{t+1} | (Y_t^{l}) 
+\end{equation}
+
+Consider the following vector $W_t = (X_t^{l}, Y_t^{l}, Z_t)$ with $Z_t = Y_{t+1}$. \Fref{eq:no-causality} can be rewritten in terms of joint probability density function $f_{X,Y,Z}(x,y,z)$:
+
+\begin{equation}
+    \frac{f_{X,Y,Z}(x,y,z)}{f_Y(y)} = \
+    \frac{f_{X,Y}(x,y)}{f_Y(y)} \frac{f_{Y,Z}(y,z)}{f_Y(y)}
+\end{equation}
+
+Next, the null hypothesis can be expressed as:
+
+\begin{equation}
+    q \equiv E [f_{X,Y,Z}(x,y,z) f_Y(y) - f_{X,Y}(x,y) f_{Y,Z}(y,z) ] = 0
+\end{equation}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \subsection{Wavelet transform} \label{sec:wavelet}
 The term ``wavelet'' was coined by Grossmann and Morlet \cite{grossmann-morlet}  in the 1980s. 
