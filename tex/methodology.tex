@@ -67,6 +67,20 @@ Next, the null hypothesis can be expressed as:
     q \equiv E [f_{X,Y,Z}(x,y,z) f_Y(y) - f_{X,Y}(x,y) f_{Y,Z}(y,z) ] = 0
 \end{equation}
 
+The test statistics is defined as follows:
+
+\begin{equation} \label{eq:diks-panchenko-test}
+    T_n(\epsilon_n) = \
+    \frac{(n-1)}{n(n-2)} \
+    \sum_{i,j \neq i} \
+    (\hat{f}_{X,Y,Z}(x,y,z) \
+    \hat{f}_Y(y) - \
+    \hat{f}_{X,Y}(x,y) \
+    \hat{f}_{Y,Z}(y,z))
+\end{equation}
+
+where:
+
 
 
 
