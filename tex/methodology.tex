@@ -49,28 +49,49 @@ developed a test for nonlinear Granger causality.
 
 Let $X_t^{l} = (X_t, X_{t-1}, \ldots X_{t-l+1})$ and $Y_t^{l} = (Y_t, Y_{t-1}, \ldots Y_{t-l+1})$
 be lagged vectors of time series. The null hypothesis assumes no causality from $X_t \Rightarrow Y_t$:
-
 \begin{equation} \label{eq:no-causality}
     Y_{t+1} | (X_t^{l}, Y_t^{l}) \sim Y_{t+1} | (Y_t^{l}) 
 \end{equation}
 
 Consider the following vector $W_t = (X_t^{l}, Y_t^{l}, Z_t)$ with $Z_t = Y_{t+1}$. \Fref{eq:no-causality} can be rewritten in terms of joint probability density function $f_{X,Y,Z}(x,y,z)$:
-
 \begin{equation}
     \frac{f_{X,Y,Z}(x,y,z)}{f_Y(y)} = \
     \frac{f_{X,Y}(x,y)}{f_Y(y)} \frac{f_{Y,Z}(y,z)}{f_Y(y)}
 \end{equation}
 
 Next, the null hypothesis can be expressed as:
-
 \begin{equation}
     q \equiv E [f_{X,Y,Z}(x,y,z) f_Y(y) - f_{X,Y}(x,y) f_{Y,Z}(y,z) ] = 0
 \end{equation}
 
-The test statistics is defined as follows:
+An estimator of $q$ based on indicator functions is:
+\begin{equation}
+    T_n(\varepsilon)= \
+    \frac{(2\varepsilon)^{-d_X -2d_Y -d_Z}}{n(n-1)(n-2)} \
+    \sum_i \
+    \bigg[ \
+    \sum_{k \neq i,j} \
+    \sum_{j \neq i} \
+    \Big( \
+    I^{XYZ}_{ik} I^{Y}_{ij} - I^{XY}_{ik} I^{YZ}_{ij} \
+    \Big) \
+    \bigg]
+\end{equation}
+where $I^W_{ij}$ is the indicator function: $I^W_{ij} = I(||W_i-W_j||<\varepsilon)$, $I$ is equal to $1$ if the condition is met and $0$ otherwise,
+$||\cdot||$ is the supremum norm,
+$d_W$ is dimension of time series vector $W_t$,
+$varepsilon$ is bandwith.
+   
+Denoting local density estimator of random vector $W$ at $W_i$ as:
+\begin{equation}
+    \hat{f}_W(W_i)=\
+    \frac{(2\varepsilon)^{-d_W}}{n-1}\
+    \sum_{j,j \neq i} I^W_{ij}
+\end{equation}
+the test statistics is defined as follows:
 
 \begin{equation} \label{eq:diks-panchenko-test}
-    T_n(\epsilon_n) = \
+    T_n(\varepsilon) = \
     \frac{(n-1)}{n(n-2)} \
     \sum_{i,j \neq i} \
     (\hat{f}_{X,Y,Z}(x,y,z) \
@@ -79,31 +100,7 @@ The test statistics is defined as follows:
     \hat{f}_{Y,Z}(y,z))
 \end{equation}
 
-where:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+It has been shown that the test is consistent for $\varepsilon = C n^{-\beta}$ for a positive constant $C$ and $\beta \in (\frac{1}{4}, \frac{1}{3})$ for sample size $n$.
 
 \subsection{Wavelet transform} \label{sec:wavelet}
 The term ``wavelet'' was coined by Grossmann and Morlet \cite{grossmann-morlet}  in the 1980s. 
