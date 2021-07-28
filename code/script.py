@@ -5,6 +5,8 @@ import pandas
 import pywt
 import subprocess
 import os
+import re
+import time
 
 def filter_wavelets(arr, n):
 	tmp=arr.copy()
@@ -17,8 +19,31 @@ def shuffle_input(dollar, oil):
     numpy.random.shuffle(dollar.TWEXMMTH.to_numpy())
     numpy.random.shuffle(oil.usd.to_numpy())
 
+def multiscale_wavelet(arr):
+    # Wavelet transform
+    wavedec=pywt.wavedec(arr.log_return[1:], 'db4', mode='zero')
+
+    # Multiscale analysis
+    wr=pandas.DataFrame()
+    for n in range(len(wavedec)):
+        wr[str(n)]=pywt.waverec(filter_wavelets(wavedec,n), 'db4', mode='zero')
+
+    return wr
+
+def dp_test(file1, file2, d):
+    dp_out=subprocess.check_output(['./GCTest', file1, file2, str(d), '1.4'])
+    dp_p_val=[]
+
+    pattern=re.compile('p-value=\d\.[\d]*')
+    for line in dp_out.decode().split('\n'):
+        match=pattern.findall(line)
+        p_val=re.sub('[\[\]\']', '', re.sub('p-value=', '', str(match)))
+        if len(p_val) != 0:
+            dp_p_val.append(float(p_val))
+
+    return dp_p_val
+
 def analyze(arr1, arr2):
-    print('counter is: '+str(counter))
     dollar=arr1.copy()
     oil=arr2.copy()
 
@@ -26,51 +51,31 @@ def analyze(arr1, arr2):
     dollar["log_return"]=numpy.log(dollar.TWEXMMTH) - numpy.log(dollar.TWEXMMTH.shift(1))
     oil["log_return"]=numpy.log(oil.usd) - numpy.log(oil.usd.shift(1))
 
-    # Wavelet transform
-    oil_wavedec=pywt.wavedec(oil.log_return[1:], 'db4', mode='zero')
-    dollar_wavedec=pywt.wavedec(dollar.log_return[1:], 'db4', mode='zero')
-
     # Multi-resolution analysis
-    oil_wr=pandas.DataFrame()
-    oil_wr['0']=pywt.waverec(filter_wavelets(oil_wavedec,0), 'db4', mode='zero')
-    oil_wr['1']=pywt.waverec(filter_wavelets(oil_wavedec,1), 'db4', mode='zero')
-    oil_wr['2']=pywt.waverec(filter_wavelets(oil_wavedec,2), 'db4', mode='zero')
-    oil_wr['3']=pywt.waverec(filter_wavelets(oil_wavedec,3), 'db4', mode='zero')
-    oil_wr['4']=pywt.waverec(filter_wavelets(oil_wavedec,4), 'db4', mode='zero')
-    oil_wr['5']=pywt.waverec(filter_wavelets(oil_wavedec,5), 'db4', mode='zero')
-    oil_wr['6']=pywt.waverec(filter_wavelets(oil_wavedec,6), 'db4', mode='zero')
-
-    dollar_wr=pandas.DataFrame()
-    dollar_wr['0']=pywt.waverec(filter_wavelets(dollar_wavedec,0), 'db4', mode='zero')
-    dollar_wr['1']=pywt.waverec(filter_wavelets(dollar_wavedec,1), 'db4', mode='zero')
-    dollar_wr['2']=pywt.waverec(filter_wavelets(dollar_wavedec,2), 'db4', mode='zero')
-    dollar_wr['3']=pywt.waverec(filter_wavelets(dollar_wavedec,3), 'db4', mode='zero')
-    dollar_wr['4']=pywt.waverec(filter_wavelets(dollar_wavedec,4), 'db4', mode='zero')
-    dollar_wr['5']=pywt.waverec(filter_wavelets(dollar_wavedec,5), 'db4', mode='zero')
-    dollar_wr['6']=pywt.waverec(filter_wavelets(dollar_wavedec,6), 'db4', mode='zero')
+    dollar_wr=multiscale_wavelet(dollar[1:])
+    oil_wr=multiscale_wavelet(oil[1:])
 
     outputdir='./output/'+format(counter, '05d')
     os.mkdir(outputdir)
+
+    band_arr=[]
     for col in oil_wr.iteritems():
         c=col[0]
-        oil_wr[c].to_csv(outputdir+'/oil_wr_'+c, header=None, index=None)
-        dollar_wr[c].to_csv(outputdir+'/dollar_wr_'+c, header=None, index=None)
+        dollar_file=outputdir+'/dollar_wr_'+c
+        oil_file=outputdir+'/oil_wr_'+c
+        dollar_wr[c].to_csv(dollar_file, header=None, index=None)
+        oil_wr[c].to_csv(oil_file, header=None, index=None)
+        step_arr=[]
+        for n in range(1, 7):
+            step_arr.append(dp_test(dollar_file, oil_file, n))
 
-    # Call Diks-Panchenko code
-    # Parse output
+        band_arr.append(step_arr)
+
 
     # Call linear GC
     # Parse output
 
-    # Cleanup
-    del oil
-    del dollar
-    del oil_wavedec
-    del dollar_wavedec
-    del oil_wr
-    del dollar_wr
-
-    return None
+    return band_arr
 
 # Import input files
 dollar_data=pandas.read_csv("./input_data/TWEXMMTH.csv")
@@ -78,8 +83,14 @@ oil_data=pandas.read_csv("./input_data/oil.csv")
 
 counter=0
 
-for i in range(10):
-    analyze(dollar_data, oil_data)
+results=[]
+for i in range(100):
+    print("Iteration number: " + str(i))
+    results.append(analyze(dollar_data, oil_data))
     shuffle_input(dollar_data, oil_data)
     counter+=1
 
+#print(len(results))
+#print(len(results[0]))
+#print(len(results[0][0]))
+#print(len(results[0][0][0]))
