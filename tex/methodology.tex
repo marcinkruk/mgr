@@ -237,8 +237,6 @@ Then, applying this scheme again: $X_t = [w_1, w_2, v_2]$, and after $J$ iterati
 
 \input{tex/pyramid.tex}
 
-TODO: \cite{practical-wavelet}, 
-
 \subsubsection{Multiresolution analysis}
 Transformed signal can be reconstructed from the coefficients $w$ and $v$ using an inverse wavelet transform.
 Original signal can be split into different scale terms using the wavelet representation proposed by Mallat \cite{mallat1989}:
@@ -289,6 +287,8 @@ Some surrogate generating methods, with examples of different types of features 
     \item intersubject surrogates for independence testing.
 \end{itemize}
 
-TODO:
-1) general scheme of employing the surrogate data method
-2) what kind of surrogate is used in this study
+Once a suitable method of data generation is chosen, a statistically significant number of surrogates is created.
+Then, each of this data sets is treated with exactly the same procedure as the original data.
+Investigating the behaviour of the discriminating statistic on the large set of surrogate data can help determine whether the results are statistically significant, or obtained simply by chance.
+
+In this research temporal features of time series is investigated, therefore random permutations of the original data sets is chosen as surrogate generating method.

@@ -13,7 +13,7 @@ The dataset was issued by The Federal Reserve Bank of St. Louis \cite{usd-data}.
 
 Raw data plot is presented on \fref{fig:raw-data}
 
-\begin{figure}
+\begin{figure}[h]
 	\includegraphics{../data/plot/raw}
 	\caption{Plot of raw input data of crude oil price and U.S. Dollar Index.}
 	\label{fig:raw-data}
@@ -26,3 +26,4 @@ NumPy \cite{numpy} and Pandas \cite{reback2020pandas} were used for array handli
 PyWavelet \cite{pywavelet} was used for wavelet decomposition of time series.
 StatsModels \cite{statsmodels} has an implementation of linear Granger causality test.
 C code from authors of \cite{diks-panchenko2004} was employed for non-linear causality test.
+A script automating the whole process was developed using Python.

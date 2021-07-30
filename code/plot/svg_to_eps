@@ -1,0 +1,6 @@
+#!/bin/sh
+
+for file in `ls *svg`; do
+    name=`echo $file | cut -d '.' -f 1`
+    inkscape -o $name.eps $file
+done
