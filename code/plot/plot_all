@@ -1,0 +1,8 @@
+#!/bin/sh
+
+files=`ls *.gnu`
+for f in $files; do
+    gnuplot $f
+done
+
+./svg_to_eps

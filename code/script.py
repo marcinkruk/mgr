@@ -5,9 +5,13 @@ import pandas
 import pywt
 import subprocess
 import os
+import random
 import re
 import time
+import math
+import cmath
 from statsmodels.tsa.stattools import grangercausalitytests
+from scipy.fft import fft, ifft
 
 def filter_wavelets(arr, n):
 	tmp=arr.copy()
@@ -19,6 +23,23 @@ def filter_wavelets(arr, n):
 def shuffle_input(dollar, oil):
     numpy.random.shuffle(dollar.TWEXMMTH.to_numpy())
     numpy.random.shuffle(oil.usd.to_numpy())
+
+def shift_phase(n):
+    return n*cmath.exp((0.0+1.0j)*random.uniform(0, 2*math.pi))
+
+def surrogate_fourier_phases(arr):
+    ft=fft(arr)
+    ft[0]=shift_phase(ft[0])
+    for n in range(1, (len(arr)+1)//2):
+        ft[n]=shift_phase(ft[n])
+        ft[len(arr)-n]=numpy.conj(ft[n])
+
+    if (len(arr)%2) == 0:
+        ft[len(arr)//2]=shift_phase(ft[len(arr)//2])
+
+    surrogate=ifft(ft)
+
+    return surrogate.real
 
 def multiscale_wavelet(arr):
     # Wavelet transform
@@ -71,38 +92,40 @@ def analyze(arr1, arr2):
     linear_band=[]
     nonlinear_band=[]
     print("step, usd->oil, oil->usd", file=open(outputdir+'/p_values', 'a'))
-    for col in oil_wr.iteritems():
-        c=col[0]
-        print("Band: " + c, file=open(outputdir+'/p_values', 'a'))
+    for col_oil in oil_wr.iteritems():
+        for col_usd in dollar_wr.iteritems():
+            c_oil=col_oil[0]
+            c_usd=col_usd[0]
+            print("Band: oil " + c_oil + " usd " + c_usd, file=open(outputdir+'/p_values', 'a'))
 
-        # Prepare arrays for linear GC test
-        data_linear_oil_dollar=pandas.concat([dollar_wr[c], oil_wr[c]], axis=1, join='inner')
-        data_linear_dollar_oil=pandas.concat([oil_wr[c], dollar_wr[c]], axis=1, join='inner')
+            # Prepare arrays for linear GC test
+            data_linear_oil_dollar=pandas.concat([dollar_wr[c_usd], oil_wr[c_oil]], axis=1, join='inner')
+            data_linear_dollar_oil=pandas.concat([oil_wr[c_oil], dollar_wr[c_usd]], axis=1, join='inner')
 
-        # Calculate linear GC
-        linear_oil_dollar=linear_gc(data_linear_oil_dollar)
-        linear_dollar_oil=linear_gc(data_linear_dollar_oil)
-        linear_p_val=list(zip(linear_dollar_oil, linear_oil_dollar))
-        print("Linear p-values:", file=open(outputdir+'/p_values', 'a'))
-        for n in range(len(linear_p_val)):
-            print(str(n+1) + ", " + str(linear_p_val[n][0]) + ", " + str(linear_p_val[n][1]), file=open(outputdir+'/p_values', 'a'))
-        linear_band.append(linear_p_val)
+            # Calculate linear GC
+            linear_oil_dollar=linear_gc(data_linear_oil_dollar)
+            linear_dollar_oil=linear_gc(data_linear_dollar_oil)
+            linear_p_val=list(zip(linear_dollar_oil, linear_oil_dollar))
+            print("Linear p-values:", file=open(outputdir+'/p_values', 'a'))
+            for n in range(len(linear_p_val)):
+                print(str(n+1) + ", " + str(linear_p_val[n][0]) + ", " + str(linear_p_val[n][1]), file=open(outputdir+'/p_values', 'a'))
+            linear_band.append(linear_p_val)
 
-        # Prepare files for Diks-Panchenko GC test
-        dollar_file=outputdir+'/dollar_wr_'+c
-        oil_file=outputdir+'/oil_wr_'+c
-        dollar_wr[c].to_csv(dollar_file, header=None, index=None)
-        oil_wr[c].to_csv(oil_file, header=None, index=None)
+            # Prepare files for Diks-Panchenko GC test
+            dollar_file=outputdir+'/dollar_wr_'+c_usd
+            oil_file=outputdir+'/oil_wr_'+c_oil
+            dollar_wr[c_usd].to_csv(dollar_file, header=None, index=None)
+            oil_wr[c_oil].to_csv(oil_file, header=None, index=None)
 
-        # Calculate nonlinear GC
-        nonlinear_step=[]
-        print("Nonlinear p-values:", file=open(outputdir+'/p_values', 'a'))
-        for n in range(1, 7):
-            nonlinear_p_val=dp_test(dollar_file, oil_file, n)
-            print(str(n) + ", " + str(nonlinear_p_val[0]) + ", " + str(nonlinear_p_val[1]), file=open(outputdir+'/p_values', 'a'))
-            nonlinear_step.append(nonlinear_p_val)
+            # Calculate nonlinear GC
+            nonlinear_step=[]
+            print("Nonlinear p-values:", file=open(outputdir+'/p_values', 'a'))
+            for n in range(1, 7):
+                nonlinear_p_val=dp_test(dollar_file, oil_file, n)
+                print(str(n) + ", " + str(nonlinear_p_val[0]) + ", " + str(nonlinear_p_val[1]), file=open(outputdir+'/p_values', 'a'))
+                nonlinear_step.append(nonlinear_p_val)
 
-        nonlinear_band.append(nonlinear_step)
+            nonlinear_band.append(nonlinear_step)
 
     return (linear_band, nonlinear_band)
 
@@ -120,7 +143,8 @@ for i in range(n_iterations):
     result=analyze(dollar_data, oil_data)
     linear_results.append(result[0])
     nonlinear_results.append(result[1])
-    shuffle_input(dollar_data, oil_data)
+    dollar_data=surrogate_fourier_phases(dollar_data)
+    oil_data=surrogate_fourier_phases(oil_data)
     counter+=1
 
 
