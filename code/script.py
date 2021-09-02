@@ -28,7 +28,7 @@ def shift_phase(n):
     return n*cmath.exp((0.0+1.0j)*random.uniform(0, 2*math.pi))
 
 def surrogate_fourier_phases(arr):
-    ft=fft(arr)
+    ft=fft(arr.to_numpy())
     ft[0]=shift_phase(ft[0])
     for n in range(1, (len(arr)+1)//2):
         ft[n]=shift_phase(ft[n])
@@ -39,7 +39,8 @@ def surrogate_fourier_phases(arr):
 
     surrogate=ifft(ft)
 
-    return surrogate.real
+    # Return value has to be shifted to positive vales, because later log is computed.
+    return surrogate.real + numpy.absolute(numpy.amin(surrogate.real)) + 1.0
 
 def multiscale_wavelet(arr):
     # Wavelet transform
