@@ -12,6 +12,8 @@ import math
 import cmath
 from statsmodels.tsa.stattools import grangercausalitytests
 from scipy.fft import fft, ifft
+import matplotlib.pyplot as plt
+from mgrtools import GcDataStructure
 
 def filter_wavelets(arr, n):
 	tmp=arr.copy()
@@ -87,17 +89,38 @@ def analyze(arr1, arr2):
     dollar_wr=multiscale_wavelet(dollar[1:])
     oil_wr=multiscale_wavelet(oil[1:])
 
+    # Prepare directory for output
     outputdir='./output/'+format(counter, '05d')
     os.mkdir(outputdir)
 
-    linear_band=[]
-    nonlinear_band=[]
-    print("step, usd->oil, oil->usd", file=open(outputdir+'/p_values', 'a'))
-    for col_oil in oil_wr.iteritems():
-        for col_usd in dollar_wr.iteritems():
+    # Output raw data
+    dollar.to_csv(outputdir+'/dollar', header=None, index=None)
+    oil.to_csv(outputdir+'/oil', header=None, index=None)
+
+    # Output wavelet reconstucted data to prepare files for Diks-Panchenko GC test
+    for col_usd in dollar_wr.iteritems():
+        for col_oil in oil_wr.iteritems():
             c_oil=col_oil[0]
             c_usd=col_usd[0]
-            print("Band: oil " + c_oil + " usd " + c_usd, file=open(outputdir+'/p_values', 'a'))
+
+            dollar_file=outputdir+'/dollar_wr_'+c_usd
+            oil_file=outputdir+'/oil_wr_'+c_oil
+            dollar_wr[c_usd].to_csv(dollar_file, header=None, index=None)
+            oil_wr[c_oil].to_csv(oil_file, header=None, index=None)
+
+    # res is an BAND_USD x BAND_OIL x STEP array of GC test results
+    res=numpy.ndarray(shape=(7,7,6), dtype=GcDataStructure)
+    for i in range(7):
+        for j in range(7):
+            for k in range(6):
+                res[i][j][k]=GcDataStructure()
+
+    print("step, usd->oil, oil->usd", file=open(outputdir+'/p_values', 'a'))
+    for col_usd in dollar_wr.iteritems():
+        for col_oil in oil_wr.iteritems():
+            c_oil=col_oil[0]
+            c_usd=col_usd[0]
+            print("Band: usd " + c_usd + " oil " + c_oil, file=open(outputdir+'/p_values', 'a'))
 
             # Prepare arrays for linear GC test
             data_linear_oil_dollar=pandas.concat([dollar_wr[c_usd], oil_wr[c_oil]], axis=1, join='inner')
@@ -110,25 +133,19 @@ def analyze(arr1, arr2):
             print("Linear p-values:", file=open(outputdir+'/p_values', 'a'))
             for n in range(len(linear_p_val)):
                 print(str(n+1) + ", " + str(linear_p_val[n][0]) + ", " + str(linear_p_val[n][1]), file=open(outputdir+'/p_values', 'a'))
-            linear_band.append(linear_p_val)
-
-            # Prepare files for Diks-Panchenko GC test
-            dollar_file=outputdir+'/dollar_wr_'+c_usd
-            oil_file=outputdir+'/oil_wr_'+c_oil
-            dollar_wr[c_usd].to_csv(dollar_file, header=None, index=None)
-            oil_wr[c_oil].to_csv(oil_file, header=None, index=None)
+                res[int(c_usd)][int(c_oil)][n].set_linear(linear_p_val[n])
 
             # Calculate nonlinear GC
-            nonlinear_step=[]
+            dollar_file=outputdir+'/dollar_wr_'+c_usd
+            oil_file=outputdir+'/oil_wr_'+c_oil
+
             print("Nonlinear p-values:", file=open(outputdir+'/p_values', 'a'))
             for n in range(1, 7):
                 nonlinear_p_val=dp_test(dollar_file, oil_file, n)
                 print(str(n) + ", " + str(nonlinear_p_val[0]) + ", " + str(nonlinear_p_val[1]), file=open(outputdir+'/p_values', 'a'))
-                nonlinear_step.append(nonlinear_p_val)
+                res[int(c_usd)][int(c_oil)][n-1].set_nonlinear(nonlinear_p_val)
 
-            nonlinear_band.append(nonlinear_step)
-
-    return (linear_band, nonlinear_band)
+    return res
 
 # Import input files
 dollar_data=pandas.read_csv("./input_data/TWEXMMTH.csv")
@@ -136,55 +153,51 @@ oil_data=pandas.read_csv("./input_data/oil.csv")
 
 counter=0
 
-linear_results=[]
-nonlinear_results=[]
-n_iterations=1000
+results=[]
+n_iterations=1001
 for i in range(n_iterations):
     print("Iteration number: " + str(i))
-    result=analyze(dollar_data, oil_data)
-    linear_results.append(result[0])
-    nonlinear_results.append(result[1])
-    dollar_data=surrogate_fourier_phases(dollar_data)
-    oil_data=surrogate_fourier_phases(oil_data)
+    results.append(analyze(dollar_data, oil_data))
+    dollar_data.TWEXMMTH=surrogate_fourier_phases(dollar_data.TWEXMMTH)
+    oil_data.usd=surrogate_fourier_phases(oil_data.usd)
     counter+=1
 
+# Data structure to hold number of success in surrogate data
+surrogate_success=numpy.ndarray(shape=(7,7,6), dtype=GcDataStructure)
+for i in range(7):
+    for j in range(7):
+        for k in range(6):
+            surrogate_success[i][j][k]=GcDataStructure()
 
-treshold=0.1
-linear_surrogate_success_percent=[[[0 for p in range(2)] for s in range(6)] for b in range(7)]
-nonlinear_surrogate_success_percent=[[[0 for p in range(2)] for s in range(6)] for b in range(7)]
-for b in range(7):
-    for s in range(6):
-        for n in range(1,n_iterations):
-            if linear_results[n][b][s][0] < treshold:
-                linear_surrogate_success_percent[b][s][0]+=1
-            if linear_results[n][b][s][1] < treshold:
-                linear_surrogate_success_percent[b][s][1]+=1
-            if nonlinear_results[n][b][s][0] < treshold:
-                nonlinear_surrogate_success_percent[b][s][0]+=1
-            if nonlinear_results[n][b][s][1] < treshold:
-                nonlinear_surrogate_success_percent[b][s][1]+=1
+print("Aggregating surrogate results...")
+treshold=0.05
+for b1 in range(7):
+    for b2 in range(7):
+        for s in range(6):
+            for n in range(1,n_iterations):
+                if results[n][b1][b2][s].linear_usd_oil < treshold:
+                    surrogate_success[b1][b2][s].linear_usd_oil+=1
+                if results[n][b1][b2][s].linear_oil_usd < treshold:
+                    surrogate_success[b1][b2][s].linear_oil_usd+=1
+                if results[n][b1][b2][s].nonlinear_usd_oil < treshold:
+                    surrogate_success[b1][b2][s].nonlinear_usd_oil+=1
+                if results[n][b1][b2][s].nonlinear_oil_usd < treshold:
+                    surrogate_success[b1][b2][s].nonlinear_oil_usd+=1
 
+print("Print them out and we're done!")
 print("linear: usd->oil, oil->usd, nonlinear: usd->oil, oil->usd", file=open('./output/surrogate_results', 'a'))
-for b in range(7):
-    print("band: " + str(b), file=open('./output/surrogate_results', 'a'))
-    for s in range(6):
-        linear_surrogate_success_percent[b][s][0]/=n_iterations-1
-        linear_surrogate_success_percent[b][s][1]/=n_iterations-1
-        nonlinear_surrogate_success_percent[b][s][0]/=n_iterations-1
-        nonlinear_surrogate_success_percent[b][s][1]/=n_iterations-1
-        print(str(s) \
-                + ", " + str(linear_surrogate_success_percent[b][s][0]) \
-                + ", " + str(linear_surrogate_success_percent[b][s][1]) \
-                + ", " + str(nonlinear_surrogate_success_percent[b][s][0]) \
-                + ", " + str(nonlinear_surrogate_success_percent[b][s][1]), \
+for b1 in range(7):
+    for b2 in range(7):
+        print("band usd: " + str(b1) + " band oil: " + str(b2), file=open('./output/surrogate_results', 'a'))
+        for s in range(6):
+            surrogate_success[b1][b2][s].linear_usd_oil/=n_iterations-1
+            surrogate_success[b1][b2][s].linear_oil_usd/=n_iterations-1
+            surrogate_success[b1][b2][s].nonlinear_usd_oil/=n_iterations-1
+            surrogate_success[b1][b2][s].nonlinear_oil_usd/=n_iterations-1
+            print(str(s) \
+                + ", " + str(surrogate_success[b1][b2][s].linear_usd_oil) \
+                + ", " + str(surrogate_success[b1][b2][s].linear_oil_usd) \
+                + ", " + str(surrogate_success[b1][b2][s].nonlinear_usd_oil) \
+                + ", " + str(surrogate_success[b1][b2][s].nonlinear_oil_usd), \
                 file=open('./output/surrogate_results', 'a'))
 
-print(len(linear_results))
-print(len(linear_results[0]))
-print(len(linear_results[0][0]))
-print(len(linear_results[0][0][0]))
-
-print(len(nonlinear_results))
-print(len(nonlinear_results[0]))
-print(len(nonlinear_results[0][0]))
-print(len(nonlinear_results[0][0][0]))
