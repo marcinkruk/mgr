@@ -80,7 +80,7 @@ An estimator of $q$ based on indicator functions is:
 where $I^W_{ij}$ is the indicator function: $I^W_{ij} = I(||W_i-W_j||<\varepsilon)$, $I$ is equal to $1$ if the condition is met and $0$ otherwise,
 $||\cdot||$ is the supremum norm,
 $d_W$ is dimension of time series vector $W_t$,
-$varepsilon$ is bandwith.
+$\varepsilon$ is bandwith.
    
 Denoting local density estimator of random vector $W$ at $W_i$ as:
 \begin{equation}
@@ -264,6 +264,7 @@ Such representation of time series will allow to analyze causal links of the ori
 
 \subsection{Surrogate data}
 
+\subsubsection{Introduction to surrogate data method}
 Infering about statistical properties of time series can be cumbersome when the data set is limited.
 In some circumstances the investigated phenomena are sparse (astrophysics), happening slowly (climate studies) or impossible to reproduce (financial data).
 Sometimes a researcher will have access to only one realization of a physical system.
@@ -282,7 +283,7 @@ It is crucial to fit the method for generating surrogate data for the tested nul
 Some surrogate generating methods, with examples of different types of features are:
 \begin{itemize}
     \item random permutation for temporal features and testing againt random noise,
-    \item Fourier Transform and derivative methods for nonlinear features,
+    \item Fourier transform and derivative methods for nonlinear features,
     \item pseudo-periodic surrogates for periodic data,
     \item intersubject surrogates for independence testing.
 \end{itemize}
@@ -291,4 +292,20 @@ Once a suitable method of data generation is chosen, a statistically significant
 Then, each of this data sets is treated with exactly the same procedure as the original data.
 Investigating the behaviour of the discriminating statistic on the large set of surrogate data can help determine whether the results are statistically significant, or obtained simply by chance.
 
-In this research temporal features of time series is investigated, therefore random permutations of the original data sets is chosen as surrogate generating method.
+\subsubsection{Surrogate data generation method choice} \label{sec:surrogate-method}
+In this research nonlinear temporal features of time series are investigated.
+First, a random permutations of the original data set were tried, with no success.
+Then, a Fourier tranform approach was employed, called \emph{phase randomisation}.
+This method has proven to be the right fit for the examined features.
+
+The surrogate data generation scheme for \emph{phase randomisation} method is as follows:
+\begin{enumerate}
+    \item calculate Fourier transform of the original time series,
+    \item generate a random vector of phase shifts of length $L/2$,
+    \item shift first half of the Fourier transform by the generated random vector,
+    \item the second half of the Fourier transform coefficients is a complex conjugate of the firs half,
+    \item perform inverse Fourier transform of the phase shifted transform coefficients,
+    \item shift the resulting surrogate data by a constant to avoid negative and zero values in the resulting output, to avoid problems calculating log returns later data analysis steps.
+\end{enumerate}
+
+An example of surrogate data generated using this scheme is presented in \fref{appendix:surrogate-example}.
