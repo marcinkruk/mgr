@@ -12,5 +12,6 @@
 *.bcf
 *.xml
 *.toc
+*.rubbercache
 bibtex/*
 tags
