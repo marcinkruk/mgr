@@ -241,25 +241,25 @@ Then, applying this scheme again: $X_t = [w_1, w_2, v_2]$, and after $J$ iterati
 Transformed signal can be reconstructed from the coefficients $w$ and $v$ using an inverse wavelet transform.
 Original signal can be split into different scale terms using the wavelet representation proposed by Mallat \cite{mallat1989}:
 \begin{equation} \label{eq:decomposed}
-	X(t) = S_J(t) + \sum_{i=1}^{J} D_i(t)
+	X(t) = A_J(t) + \sum_{i=1}^{J} D_i(t)
 \end{equation}
-where $J$ is the number of analyzed scales, $S_J$ and $D_i$ are given by:
+where $J$ is the number of analyzed scales, $A_J$ and $D_i$ are given by:
 \begin{equation}
-	S_J(t) = \sum_k s_{J,k} \phi_{J,k}(t)
+	A_J(t) = \sum_k a_{J,k} \phi_{J,k}(t)
 \end{equation}
 \begin{equation}
 	D_i(t) = \sum_k d_{i,k} \psi_{j,k}(t).
 \end{equation}
-Coefficients $s_{J,K}$ and $d_{j,k}$ are projections of the original signal on father and mother wavelets respectively:
+Coefficients $a_{J,K}$ and $d_{j,k}$ are projections of the original signal on father and mother wavelets respectively:
 \begin{equation}
-	s_{J,k} = \int dt \, \phi_{J,k}(t) X(t)
+	a_{J,k} = \int dt \, \phi_{J,k}(t) X(t)
 \end{equation}
 \begin{equation}
 	d_{i,k} = \int dt \, \psi_{i,k}(t) X(t).
 \end{equation}
 
 In the wavelet representation given by \fref{eq:decomposed} terms $D_i$ capture signal details around trend for frequences $2^{-i+1} \leq f \leq 2^{i}$.
-The $S_J$ term is the remaining signal trend for scale $J$.
+The $A_J$ term is the remaining signal trend for scale $J$.
 Such representation of time series will allow to analyze causal links of the original signals in different time scales.
 
 \subsection{Surrogate data}
@@ -300,10 +300,10 @@ This method has proven to be the right fit for the examined features.
 
 The surrogate data generation scheme for \emph{phase randomisation} method is as follows:
 \begin{enumerate}
-    \item calculate Fourier transform of the original time series,
+    \item calculate Fourier transform of the original time series of length $L$,
     \item generate a random vector of phase shifts of length $L/2$,
-    \item shift first half of the Fourier transform by the generated random vector,
-    \item the second half of the Fourier transform coefficients is a complex conjugate of the firs half,
+    \item shift first half of the Fourier transform coefficients by the generated random vector,
+    \item the second half of the Fourier transform coefficients is a complex conjugate of the first half,
     \item perform inverse Fourier transform of the phase shifted transform coefficients,
     \item shift the resulting surrogate data by a constant to avoid negative and zero values in the resulting output, to avoid problems calculating log returns later data analysis steps.
 \end{enumerate}
