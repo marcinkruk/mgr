@@ -30,7 +30,7 @@ set size ratio 0.5625
 set term svg enhanced font "cmr10"
 set output "surrogate_usd_wr_D3.svg"
 plot \
-"../output/01000/dollar_with_log_returns.csv" u 1:3\
+"../output/00666/dollar" u 1:3\
 w l lc rgbcolor "#C0C0C0", \
-"../output/01000/dollar_wr_4" u 1:2 \
+"../output/00666/dollar_wr_4" u 1:2 \
 w l lc rgbcolor "#0080FF"
