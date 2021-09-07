@@ -292,13 +292,14 @@ Once a suitable method of data generation is chosen, a statistically significant
 Then, each of this data sets is treated with exactly the same procedure as the original data.
 Investigating the behaviour of the discriminating statistic on the large set of surrogate data can help determine whether the results are statistically significant, or obtained simply by chance.
 
+\newpage
 \subsubsection{Surrogate data generation method choice} \label{sec:surrogate-method}
 In this research nonlinear temporal features of time series are investigated.
 First, a random permutations of the original data set were tried, with no success.
 Then, a Fourier tranform approach was employed, called \emph{phase randomisation}.
 This method has proven to be the right fit for the examined features.
 
-The surrogate data generation scheme for \emph{phase randomisation} method is as follows:
+The surrogate data generation scheme for phase randomisation method is as follows:
 \begin{enumerate}
     \item calculate Fourier transform of the original time series of length $L$,
     \item generate a random vector of phase shifts of length $L/2$,
