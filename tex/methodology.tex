@@ -163,7 +163,7 @@ For practical purposes, to analyze real-life discrete time series, a discrete wa
 It allows to decompose time series into multiple frequency scales.
 
 The DWT is based on two discrete wavelet filters, called \emph{mother wavelet}
-(which is a high-pass filter):
+(which is a band-pass filter):
 \begin{equation}
 h_l=(h_0, h_1, \, \ldots \, h_{L-1})
 \end{equation}
@@ -224,7 +224,7 @@ $a=2^{-j}$ and $b=k 2^{-j}$, where $j, k \in \mathbb{N}$ and $j \leq J = log_2(T
 $J$ is the biggest number of scales and $T$ is the length of the time series.
 
 To decompose a signal with DWT, a \emph{pyramid algorithm} is employed (see \fref{fig:pyramid}).
-It consists of recursively applying low-pass and high-pass filters to the time series.
+It consists of recursively applying low-pass and band-pass filters to the time series.
 With each iteration of this scheme the high and low frequencies are separated.
 The father wavelet captures the trend of the series, while mother wavelet extracts oscillatory components around the trend.
 
